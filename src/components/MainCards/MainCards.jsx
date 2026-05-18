@@ -1,11 +1,19 @@
 import ExpenseCard from "../SectionCards/ExpenseCard";
+import ExpenseAfterBillsCard from "../SectionCards/ExpenseAfterBillsCard";
 import SalaryBalanceCard from "../SectionCards/SalaryBalanceCard";
 import SalaryCard from "../SectionCards/SalaryCards";
 import TotalExpenseCard from "../SectionCards/TotalExpenseCard";
-import "../../assets/";
+import penIcon from "../../assets/penIcon.svg";
 import "./MainCards.css";
+import { useState } from "react";
 
 function MainCards() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggleBudgetCard = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <div className="content">
       <section
@@ -18,6 +26,7 @@ function MainCards() {
           <div
             className="budget__card-header"
             type="button"
+            onClick={handleToggleBudgetCard}
             data-role="toggleBudgetCard"
           >
             <div className="budget__card-header_text">
@@ -25,11 +34,12 @@ function MainCards() {
                 type="button"
                 className="budget__card-title"
                 data-role="edit-budget-name"
+                onClick={(e) => e.stopPropagation()}
                 data-no-toggle="true"
                 aria-label="Open"
               >
                 <h3 className="budget__name">New Budget</h3>
-                <img src="./images/pen-icon.svg" alt="Pen icon" />
+                <img src={penIcon} alt="Pen icon" />
               </button>
               <p className="budget__card-subtitle">Tap to expand / collapse</p>
             </div>
@@ -37,18 +47,28 @@ function MainCards() {
               type="button"
               className="budget__delete-btn"
               aria-label="Delete"
+              onClick={(e) => e.stopPropagation()}
               data-no-toggle="true"
             >
               <div className="budget__delete-icon"></div>
             </button>
-            <button className="budget__card-chev">⌄</button>
+            <button
+              type="button"
+              className="budget__card-chev"
+              aria-expanded={isOpen}
+            >
+              ⌄
+            </button>
           </div>
-          <div className="budget__card-body" data-role="budget-body">
-            <SalaryCard />
-            <ExpenseCard />
-            <TotalExpenseCard />
-            <SalaryBalanceCard />
-          </div>
+          {isOpen && (
+            <div className="budget__card-body" data-role="budget-body">
+              <SalaryCard />
+              <ExpenseCard />
+              <ExpenseAfterBillsCard />
+              <TotalExpenseCard />
+              <SalaryBalanceCard />
+            </div>
+          )}
         </section>
       </section>
     </div>

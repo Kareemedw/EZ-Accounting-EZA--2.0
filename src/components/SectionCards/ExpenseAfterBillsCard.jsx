@@ -4,7 +4,7 @@ function ExpenseAfterBillsCard() {
   return (
     <div className="expense__after-bills">
       <section className="additional__spending page__section">
-        <h2 className="card__title">Additional Spennding</h2>
+        <h2 className="card__title">Additional Spending</h2>
         <div className="card">
           <h2 className="card__title card__title_balance">Expense Tracking</h2>
           <div className="tracking__balance">

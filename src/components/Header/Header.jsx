@@ -1,5 +1,5 @@
 import "./Header.css";
-import "../../assets/avatar.png";
+import avatar from "../../assets/avatar.png";
 
 function Header() {
   return (
@@ -9,7 +9,7 @@ function Header() {
       </div>
       <div className="header__user-container">
         <h3 className="header__username">Kareem Edwards</h3>
-        <img src="" alt="Kareem Edwards" className="header__avatar" />
+        <img src={avatar} alt="Kareem Edwards" className="header__avatar" />
       </div>
     </header>
   );

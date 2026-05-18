@@ -46,9 +46,9 @@
   border-radius: 0 0 16px 16px;
 
   overflow: hidden;
-  max-height: 0;
   transition: max-height 0.35s ease;
   overflow-y: scroll;
+  display: block;
 }
 
 .budget__card--open.budget__card-body {
@@ -101,6 +101,10 @@
   font-size: 1.25rem;
   transition: transform 0.25s ease;
   margin-top: auto;
+  margin-right: 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 .budget__card--open .budget__card-chev {
