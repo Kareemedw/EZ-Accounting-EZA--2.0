@@ -107,7 +107,7 @@
   cursor: pointer;
 }
 
-.budget__card--open .budget__card-chev {
+.budget__card-chev--open {
   transform: rotate(180deg);
 }
 
@@ -117,12 +117,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: transparent url(../images/X-icon.svg) center no-repeat;
   border: none;
   position: absolute;
   top: -2px;
-  right: 5px;
+  right: 50px;
   cursor: pointer;
+  background: transparent;
 }
 
 @media screen and (max-width: 630px) {

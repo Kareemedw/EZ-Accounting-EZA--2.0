@@ -1,4 +1,5 @@
 import "./SectionCards.css";
+import penIcon from "../../assets/penIcon.svg";
 
 function SalaryCard() {
   return (
@@ -39,7 +40,7 @@ function SalaryCard() {
                 data-no-toggle="true"
               >
                 <h3 className="budget__type">Salary</h3>
-                <img src="./images/pen-icon.svg" alt="Pen icon" />
+                <img src={penIcon} alt="Pen icon" />
               </button>
               <input
                 data-role="salary-input-1"

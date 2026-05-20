@@ -1,0 +1,296 @@
+.card {
+  background-color: whitesmoke;
+  border-radius: 8px;
+  position: relative;
+  padding: 32px 50px;
+  box-sizing: border-box;
+}
+
+.card__list {
+  padding: 0;
+}
+
+.card__list1 {
+  padding: 0;
+}
+
+.card__lists {
+  padding: 0;
+}
+
+.card__utility_bill {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  position: relative;
+}
+
+.card__title_balance {
+  margin: 0;
+}
+
+.card__balance_bill {
+  display: flex;
+  align-items: baseline;
+  margin: 0;
+  padding: 20px 50px;
+  flex-direction: column;
+}
+
+.card__form {
+  display: flex;
+  align-items: center;
+}
+
+.card__form_utitlity_bill {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  position: relative;
+}
+
+.card__label {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+  max-width: 400px;
+  width: 30%;
+}
+
+.card__label_salary {
+  margin: 0 auto;
+}
+
+.card__label_utility_bill {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
+  position: relative;
+  width: 50%;
+  max-width: 800px;
+}
+
+.card__input {
+  margin: 8px 0 0;
+  border-radius: 8px;
+  font-family: "Poppins", Arial, Helvetica, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  color: #212121;
+  padding: 10px;
+  opacity: 40%;
+}
+
+.card__input_utility_bill {
+  margin-left: 20px;
+  margin-right: 12px;
+}
+
+.utilityBills {
+  list-style: none;
+}
+
+.recurringBills {
+  list-style: none;
+}
+
+.balanceBill {
+  list-style: none;
+  width: 100%;
+}
+
+/* Button Styles*/
+
+.operant__btn {
+  border: none;
+  background: none;
+  display: flex;
+  position: relative;
+  top: 15px;
+}
+
+.bill__delete-btn {
+  border-style: none;
+  padding: 0;
+  display: flex;
+  position: absolute;
+  left: 310px;
+  top: 53px;
+  cursor: pointer;
+}
+
+.bill__delete-btn:hover {
+  background-color: #ff6565;
+  border-radius: 50%;
+}
+
+.bill__delete-icon {
+  width: 32px;
+  height: 32px;
+  opacity: 100%;
+  transition: opacity 0.3s ease;
+}
+
+.bill__delete-btn:hover {
+  cursor: pointer;
+  background-color: #ff6565;
+  border-radius: 50%;
+}
+
+.card__balance_tracking {
+  margin-bottom: 20px;
+  display: contents;
+}
+
+.add__btn {
+  cursor: pointer;
+  background-color: #212121;
+  padding: 18px 58px;
+  max-width: 156px;
+  height: 52px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  color: #fcf5e5;
+  border-radius: 8px;
+  cursor: pointer;
+  opacity: 100%;
+  transition: opacity 0.3s ease;
+  border: none;
+  margin-top: 12px;
+}
+
+.add__btn:hover {
+  opacity: 80%;
+}
+
+.form__fieldset {
+  border: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.card__label_tracking {
+  position: absolute;
+  left: 800px;
+  top: 35px;
+}
+
+.card__label_tracking-total {
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 1075px) {
+  .card__form {
+    padding: 0 16px;
+    flex-direction: column;
+  }
+
+  .operant__btn {
+    top: 5px;
+  }
+
+  .bill__delete-btn {
+    left: 320px;
+  }
+
+  .card__label_tracking {
+    margin-top: 20px;
+  }
+  .card__label_tracking {
+    position: relative;
+    left: 5px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .card__list {
+    margin: 0 auto;
+  }
+  .card__lists {
+    margin: 0 auto;
+  }
+  .card__list1 {
+    margin: 0 auto;
+  }
+
+  .card__label {
+    width: 50%;
+  }
+
+  .card__utility_bill {
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  .operant__btn {
+    top: 5px;
+  }
+
+  .bill__delete-btn {
+    left: 318px;
+  }
+
+  .card__title_balance {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .card__title_additional {
+    margin-bottom: 0;
+  }
+
+  .card__label_tracking {
+    position: relative;
+  }
+}
+
+@media screen and (max-width: 630px) {
+  .card__label {
+    width: 100%;
+  }
+
+  .card__label_salary {
+    margin-top: 12px;
+  }
+
+  .card__label_date {
+    margin: 0 auto;
+  }
+
+  .card__input {
+    padding: 0;
+    max-width: 300px;
+  }
+
+  .card__input_utility_bill {
+    padding: 0;
+    max-width: 180px;
+    justify-content: center;
+  }
+
+  .operant__btn {
+    top: 5px;
+  }
+
+  .bill__delete-btn {
+    top: 45px;
+    left: 225px;
+  }
+
+  .card__balance_bill {
+    justify-content: center;
+  }
+
+  .card__title_additional {
+    margin-bottom: 0;
+  }
+
+  .card__label_tracking {
+    position: relative;
+  }
+}

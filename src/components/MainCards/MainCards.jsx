@@ -1,17 +1,19 @@
+import { useState } from "react";
 import ExpenseCard from "../SectionCards/ExpenseCard";
 import ExpenseAfterBillsCard from "../SectionCards/ExpenseAfterBillsCard";
 import SalaryBalanceCard from "../SectionCards/SalaryBalanceCard";
 import SalaryCard from "../SectionCards/SalaryCards";
 import TotalExpenseCard from "../SectionCards/TotalExpenseCard";
 import penIcon from "../../assets/penIcon.svg";
+import deleteIcon from "../../assets/delete-icon.svg";
 import "./MainCards.css";
-import { useState } from "react";
 
 function MainCards() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggleBudgetCard = () => {
-    setIsOpen(!isOpen);
+    //setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   return (
@@ -25,9 +27,8 @@ function MainCards() {
         <section className="budget__card" data-role="add-budget-form">
           <div
             className="budget__card-header"
-            type="button"
-            onClick={handleToggleBudgetCard}
             data-role="toggleBudgetCard"
+            onClick={handleToggleBudgetCard}
           >
             <div className="budget__card-header_text">
               <button
@@ -50,12 +51,17 @@ function MainCards() {
               onClick={(e) => e.stopPropagation()}
               data-no-toggle="true"
             >
-              <div className="budget__delete-icon"></div>
+              <img src={deleteIcon} alt="Delete Icon" />
             </button>
             <button
               type="button"
-              className="budget__card-chev"
-              aria-expanded={isOpen}
+              className={`budget__card-chev ${
+                isOpen ? "budget__card-chev--open" : ""
+              }`}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleToggleBudgetCard();
+              }}
             >
               ⌄
             </button>

@@ -1,6 +1,6 @@
-/*Expanding Additional Bills Card*/
+/*Expanding Bills Card*/
 
-.additionalBills__card-header {
+.bills__card-header {
   width: 100%;
   padding: 1rem 1.25rem;
   display: flex;
@@ -11,7 +11,7 @@
   background-color: whitesmoke;
 }
 
-.additionalBills__card {
+.bills__card {
   width: 100%;
   border-radius: 16px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
@@ -20,7 +20,7 @@
   margin-top: 15px;
 }
 
-.additionalBills__card-chev {
+.bills__card-chev {
   font-size: 1.25rem;
   transition: transform 0.25s ease;
   margin-top: auto;
@@ -29,11 +29,11 @@
   border: none;
 }
 
-.additionalBills__card--open .additionalBills__card-chev {
+.bills__card--open .bills__card-chev {
   transform: rotate(180deg);
 }
 
-.additionalBills__card-title {
+.bills__card-title {
   display: flex;
   gap: 12px;
   margin-bottom: 12px;
@@ -42,12 +42,12 @@
   align-items: baseline;
 }
 
-.additionalBills__card-title_type {
+.bills__card-title_type {
   margin-bottom: 0;
   align-items: baseline;
 }
 
-.additionalBills__card-subtitle {
+.bills__card-subtitle {
   margin: 0;
   font-size: 0.8rem;
   color: #6b7280;
