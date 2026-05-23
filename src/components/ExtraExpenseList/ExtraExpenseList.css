@@ -29,7 +29,7 @@
   border: none;
 }
 
-.additionalBills__card--open .additionalBills__card-chev {
+.additionalBills__card-chev--open {
   transform: rotate(180deg);
 }
 
@@ -51,4 +51,15 @@
   margin: 0;
   font-size: 0.8rem;
   color: #6b7280;
+}
+
+.additionalExpense__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 100px;
+  row-gap: 1px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  margin-bottom: 25px;
 }

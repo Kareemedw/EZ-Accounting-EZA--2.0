@@ -1,15 +1,33 @@
 import { useState } from "react";
 import SubscriptionList from "../MandatoryBillsLists/SubscriptionList";
 import UtilityList from "../MandatoryBillsLists/UtilityList";
+import { initialBills, initialRecurringBill } from "../../utils/Constants";
 import "./SectionCards.css";
 import penIcon from "../../assets/penIcon.svg";
+import TotalExpenseCard from "./TotalExpenseCard";
 
-function ExpenseCard() {
+function ExpenseCard({
+  budget,
+  onAddExpenseToBudget,
+  utilityBills,
+  recurringBills,
+  onDeleteExpense,
+  onUpdateExpensePrice,
+  totalUtilityBills,
+  totalSubscriptions,
+  totalExpenses,
+  formatMoney,
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggleBillsCard = () => {
     setIsOpen(!isOpen);
   };
+
+  const [expenses, setExpenses] = useState({
+    utilityBills: initialBills,
+    recurringBills: initialRecurringBill,
+  });
 
   return (
     <div className="expense__card">
@@ -19,13 +37,13 @@ function ExpenseCard() {
           <div
             className="bills__card-header"
             onClick={handleToggleBillsCard}
-            data-role="toggleBillsCard"
+            id="toggleBillsCard"
           >
             <div className="bills__card-header_text">
               <button
                 type="button"
                 className="bills__card-title"
-                data-role="edit-bills-name"
+                id="edit-bills-name"
                 data-no-toggle="true"
                 aria-label="Open"
                 onClick={(e) => e.stopPropagation()}
@@ -36,25 +54,37 @@ function ExpenseCard() {
               <p className="bills__card-subtitle">Tap to expand / collapse</p>
             </div>
             <button
-              type="button"
-              className="bills__delete-btn"
-              aria-label="Delete"
-              data-no-toggle="true"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="bills__delete-icon"></div>
-            </button>
-            <button
-              className={`bills__card-chev ${isOpen ? "budget__card-chev--open" : ""}`}
+              className={`bills__card-chev ${isOpen ? "bills__card-chev--open" : ""}`}
             >
               ⌄
             </button>
           </div>
           {isOpen && (
-            <div className="bills__card-body" data-role="bills-body">
+            <div className="bills__card-body" id="bills-body">
               <div className="card card__utility_bill">
-                <UtilityList />
-                <SubscriptionList />
+                <UtilityList
+                  budgetId={budget._id}
+                  expenses={utilityBills}
+                  listName="utilityBills"
+                  onAddExpenseToBudget={onAddExpenseToBudget}
+                  onDeleteExpense={onDeleteExpense}
+                  onUpdateExpensePrice={onUpdateExpensePrice}
+                />
+                <SubscriptionList
+                  budgetId={budget._id}
+                  expenses={recurringBills}
+                  listName="recurringBills"
+                  onAddExpenseToBudget={onAddExpenseToBudget}
+                  onDeleteExpense={onDeleteExpense}
+                  onUpdateExpensePrice={onUpdateExpensePrice}
+                />
+                <TotalExpenseCard
+                  totalUtilityBills={totalUtilityBills}
+                  totalSubscriptions={totalSubscriptions}
+                  totalExpenses={totalExpenses}
+                  onUpdateExpensePrice={onUpdateExpensePrice}
+                  formatMoney={formatMoney}
+                />
               </div>
             </div>
           )}

@@ -1,3 +1,6 @@
+@import url(../src/vendor/normalize.css);
+@import url(../src/vendor/font.css);
+
 body {
   margin: 0;
   padding: 0; /* Optional: also remove default padding */

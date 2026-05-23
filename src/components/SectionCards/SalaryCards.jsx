@@ -1,33 +1,33 @@
 import "./SectionCards.css";
 import penIcon from "../../assets/penIcon.svg";
 
-function SalaryCard() {
+function SalaryCard({
+  salary,
+  onSalaryChange,
+  budgetId,
+  finalBalance,
+  formatMoney,
+}) {
   return (
     <div className="salary__card">
       <section className="salary page__section">
         <h2 className="card__title">Salary</h2>
         <div className="card">
-          <form
-            className="card__form card__form_date"
-            data-role="card-form-date"
-          >
+          <form className="card__form card__form_date" id="card-form-date">
             <label
               htmlFor="date-input-1"
               className="card__label card__label_date"
             >
               Date
               <input
-                data-role="date-input-1"
+                id="date-input-1"
                 type="date"
                 className="card__input"
                 placeholder="Month & Year"
               />
             </label>
           </form>
-          <form
-            className="card__form card__form_salary"
-            data-role="card-form-salary"
-          >
+          <form className="card__form card__form_salary" id="card-form-salary">
             <label
               htmlFor="salary-input-1"
               className="card__label card__label_salary"
@@ -35,7 +35,7 @@ function SalaryCard() {
               <button
                 type="button"
                 className="budget__card-title budget__card-title_type"
-                data-role="edit-budget-type"
+                id="edit-budget-type"
                 aria-label="Open"
                 data-no-toggle="true"
               >
@@ -43,16 +43,18 @@ function SalaryCard() {
                 <img src={penIcon} alt="Pen icon" />
               </button>
               <input
-                data-role="salary-input-1"
-                type="number symbol"
+                id="salary-input-1"
+                type="number"
                 className="card__input"
                 placeholder="Your salary"
+                value={salary ?? ""}
+                onChange={(e) => onSalaryChange(budgetId, e.target.value)}
               />
             </label>
           </form>
           <form
             className="card__form card__balance_tracking"
-            data-role="balance-tracking"
+            id="balance-tracking"
           >
             <label
               htmlFor="tracking-input"
@@ -60,10 +62,12 @@ function SalaryCard() {
             >
               Actual Balance
               <input
-                data-role="tracking-inputs"
-                type="number symbol"
+                id="tracking-inputs"
+                type="text"
                 className="card__input card__balance-input"
                 placeholder="Salary balance tracking"
+                value={formatMoney(finalBalance)}
+                readOnly
               />
             </label>
           </form>

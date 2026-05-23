@@ -23,6 +23,7 @@
   align-items: baseline;
   justify-content: space-between;
   position: relative;
+  flex-direction: column;
 }
 
 .card__title_balance {
@@ -100,6 +101,12 @@
 .balanceBill {
   list-style: none;
   width: 100%;
+}
+
+/* Total Expense Card*/
+
+.totalExpense__title {
+  margin-bottom: 0;
 }
 
 /* Button Styles*/
@@ -198,11 +205,17 @@
   }
 
   .card__label_tracking {
-    margin-top: 20px;
+    position: relative;
+    left: 290px;
+    margin-bottom: 20px;
   }
+}
+
+@media screen and (max-width: 1006px) {
   .card__label_tracking {
     position: relative;
-    left: 5px;
+    left: 250px;
+    margin-bottom: 20px;
   }
 }
 
@@ -243,9 +256,26 @@
   .card__title_additional {
     margin-bottom: 0;
   }
-
   .card__label_tracking {
     position: relative;
+    left: 170px;
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 852px) {
+  .card__label_tracking {
+    position: relative;
+    left: 150px;
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 668px) {
+  .card__label_tracking {
+    position: relative;
+    left: 115px;
+    margin-bottom: 20px;
   }
 }
 
@@ -292,5 +322,7 @@
 
   .card__label_tracking {
     position: relative;
+    left: 10px;
+    margin-bottom: 20px;
   }
 }

@@ -1,9 +1,18 @@
 import { useState } from "react";
 import ExtraExpenseList from "../ExtraExpenseList/ExtraExpenseList";
 import penIcon from "../../assets/penIcon.svg";
+import { initialAdditionalBills } from "../../utils/Constants";
 import "./SectionCards.css";
 
-function ExpenseAfterBillsCard() {
+function ExpenseAfterBillsCard({
+  budget,
+  extraExpenses,
+  onUpdateExpensePrice,
+  onDeleteExpense,
+  onAddExpenseToBudget,
+  totalAdditionalBills,
+  formatMoney,
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggleAdditionalBillsCard = () => {
@@ -17,13 +26,13 @@ function ExpenseAfterBillsCard() {
         <div
           className="additionalBills__card-header"
           onClick={handleToggleAdditionalBillsCard}
-          data-role="toggleBillsCard"
+          id="toggleBillsCard"
         >
           <div className="additionalBills__card-header_text">
             <button
               type="button"
               className="additionalBills__card-title"
-              data-role="edit-bills-name"
+              id="edit-bills-name"
               data-no-toggle="true"
               aria-label="Open"
               onClick={(e) => e.stopPropagation()}
@@ -45,15 +54,24 @@ function ExpenseAfterBillsCard() {
             <div className="additionalBills__delete-icon"></div>
           </button>
           <button
-            className={`additionalBills__card-chev ${isOpen ? "budget__card-chev--open" : ""}`}
+            className={`additionalBills__card-chev ${isOpen ? "additionalBills__card-chev--open" : ""}`}
           >
             ⌄
           </button>
         </div>
         {isOpen && (
-          <div className="additionalBills__card-body" data-role="bills-body">
+          <div className="additionalBills__card-body" id="bills-body">
             <div className="expense__after-bills">
-              <ExtraExpenseList />
+              <ExtraExpenseList
+                extraExpenses={extraExpenses}
+                listName="additionalBills"
+                budgetId={budget._id}
+                onAddExpenseToBudget={onAddExpenseToBudget}
+                onDeleteExpense={onDeleteExpense}
+                onUpdateExpensePrice={onUpdateExpensePrice}
+                formatMoney={formatMoney}
+                totalAdditionalBills={totalAdditionalBills}
+              />
             </div>
           </div>
         )}
