@@ -11,8 +11,6 @@ function SubscriptionList({
   onDeleteExpense,
   onUpdateExpensePrice,
 }) {
-  //const [recurringBills, setRecurringBills] = useState(initialRecurringBill);
-
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
 
@@ -41,7 +39,6 @@ function SubscriptionList({
               placeholder="Expense Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
             />
             <input
               id="bills_input_add2"
@@ -50,14 +47,12 @@ function SubscriptionList({
               placeholder="Expense Price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              required
             />
             <button
-              type="button"
+              type="submit"
               className="add__btn"
               id="addBtn2"
               aria-label="Add"
-              onClick={handleSubmit}
             >
               Add
             </button>
@@ -66,8 +61,12 @@ function SubscriptionList({
       </div>
       <ul className="recurring__list">
         {expenses.map((recurring) => (
-          <li className="recurringBills" key={recurring.name}>
-            <form className="card__form_utitlity_bill" id="utility-bill">
+          <li className="recurringBills" key={recurring._id || recurring.id}>
+            <form
+              className="card__form_utitlity_bill"
+              onSubmit={handleSubmit}
+              id="utility-bill"
+            >
               <label
                 htmlFor="subscription_input"
                 className="card__label card__label_utility_bill subscription-input recurringBill"
@@ -77,19 +76,30 @@ function SubscriptionList({
               </label>
               <input
                 id="subscription_input"
-                type="number symbol"
+                type="number"
                 className="card__input card__input_utility_bill subscription-input"
                 placeholder="Your recurring expenses"
-                defaultValue={recurring.price}
+                value={recurring.price ?? ""}
                 onChange={(e) =>
-                  onUpdateExpensePrice(listName, recurring.id, e.target.value)
+                  onUpdateExpensePrice(
+                    budgetId,
+                    listName,
+                    recurring._id || recurring.id,
+                    e.target.value,
+                  )
                 }
               />
               <button
                 type="button"
                 className="bill__delete-btn"
                 aria-label="Delete"
-                onClick={() => onDeleteExpense(listName, recurring.id)}
+                onClick={() =>
+                  onDeleteExpense(
+                    budgetId,
+                    listName,
+                    recurring._id || recurring.id,
+                  )
+                }
               >
                 <img
                   src={deleteIcon}

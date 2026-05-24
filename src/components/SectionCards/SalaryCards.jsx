@@ -3,6 +3,8 @@ import penIcon from "../../assets/penIcon.svg";
 
 function SalaryCard({
   salary,
+  date,
+  onDateChange,
   onSalaryChange,
   budgetId,
   finalBalance,
@@ -24,6 +26,8 @@ function SalaryCard({
                 type="date"
                 className="card__input"
                 placeholder="Month & Year"
+                value={date || ""}
+                onChange={(e) => onDateChange(budgetId, e.target.value)}
               />
             </label>
           </form>

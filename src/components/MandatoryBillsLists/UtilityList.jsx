@@ -30,24 +30,30 @@ function UtilityList({
     <ul className="card__list">
       <h3 className="card__title">Utility Bills</h3>
       <div className="card__add">
-        <form className="card__form" data-role="utility-bill">
+        <form
+          className="card__form"
+          data-role="utility-bill"
+          onSubmit={handleSubmit}
+        >
           <fieldset className="form__fieldset">
             <input
               data-role="bills_input-add"
               type="text"
               className="card__input card__input_utility_bill"
               placeholder="Expense Name"
-              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <input
               data-role="bills_input_add"
               type="number"
               className="card__input card__input_utility_bill"
               placeholder="Expense Price"
-              required
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
             />
             <button
-              type="button"
+              type="submit"
               className="add__btn"
               data-role="addBtn1"
               aria-label="Add"
@@ -59,8 +65,16 @@ function UtilityList({
       </div>
       <ul className="utility__list">
         {expenses.map((bill) => (
-          <li className="utilityBills" key={bill.name} data-role="utilityBills">
-            <form className="card__form_utitlity_bill" data-role="utility-bill">
+          <li
+            className="utilityBills"
+            key={bill._id || bill.id}
+            data-role="utilityBills"
+          >
+            <form
+              className="card__form_utitlity_bill"
+              onSubmit={handleSubmit}
+              data-role="utility-bill"
+            >
               <label
                 htmlFor="bills-input"
                 className="card__label card__label_utility_bill utilityBill"
@@ -70,12 +84,12 @@ function UtilityList({
               </label>
               <input
                 type="number"
-                value={bill.price}
+                value={bill.price ?? ""}
                 onChange={(e) =>
                   onUpdateExpensePrice(
                     budgetId,
                     listName,
-                    bill.id,
+                    bill._id || bill.id,
                     e.target.value,
                   )
                 }
@@ -86,7 +100,9 @@ function UtilityList({
                 type="button"
                 className="bill__delete-btn"
                 aria-label="Delete"
-                onClick={() => onDeleteExpense(budgetId, listName, bill.id)}
+                onClick={() =>
+                  onDeleteExpense(budgetId, listName, bill._id || bill.id)
+                }
               >
                 <img
                   src={deleteIcon}

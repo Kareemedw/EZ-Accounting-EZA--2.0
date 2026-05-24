@@ -31,6 +31,7 @@ function App() {
     createBudget({
       name: "New Budget",
       salary: 0,
+      date: "",
       utilityBills: initialBills,
       recurringBills: initialRecurringBill,
       additionalBills: initialAdditionalBills,
@@ -39,6 +40,22 @@ function App() {
         setBudgets([res.data, ...budgets]);
       })
       .catch(console.error);
+  };
+
+  const handleDateChange = (budgetId, newDate) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+
+    if (!budget) {
+      console.error("Budget not found:", budgetId);
+      return;
+    }
+
+    const updatedBudget = {
+      ...budget,
+      date: newDate,
+    };
+
+    handleSaveBudget(budgetId, updatedBudget);
   };
 
   const handleSaveBudget = (budgetId, updatedData) => {
@@ -66,50 +83,55 @@ function App() {
     handleSaveBudget(budgetId, updatedBudget);
   };
 
+  const handleUpdateExpensePrice = (
+    budgetId,
+    listName,
+    expenseId,
+    newPrice,
+  ) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+
+    if (!budget) {
+      console.error("Budget not found:", budgetId);
+      return;
+    }
+
+    const updatedBudget = {
+      ...budget,
+      [listName]: budget[listName].map((expense) =>
+        (expense._id || expense.id) === expenseId
+          ? { ...expense, price: newPrice }
+          : expense,
+      ),
+    };
+
+    handleSaveBudget(budgetId, updatedBudget);
+  };
+
   const handleDeleteBudgetCard = (budgetId) => {
     deleteBudget(budgetId)
       .then(() => {
         setBudgets(budgets.filter((budget) => budget._id !== budgetId));
       })
+
       .catch(console.error);
   };
 
-  /*const [expenses, setExpenses] = useState({
-    utilityBills: initialBills,
-    recurringBills: initialRecurringBill,
-    additionalBills: initialAdditionalBills,
-    salary: "",
-  });*/
+  const handleDeleteExpense = (budgetId, listName, expenseId) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    const updatedBudget = {
+      ...budget,
+      [listName]: budget[listName].filter(
+        (expense) => (expense._id || expense.id) !== expenseId,
+      ),
+    };
+
+    handleSaveBudget(budgetId, updatedBudget);
+  };
 
   /* Calculation Code*/
-  const handleAddExpense = (listName, newExpense) => {
-    setBudgets((prev) => ({
-      ...prev,
-      [listName]: [
-        {
-          id: crypto.randomUUID(),
-          ...newExpense,
-        },
-        ...prev[listName],
-      ],
-    }));
-  };
-
-  const handleDeleteExpense = (listName, budgetId) => {
-    setBudgets((prev) => ({
-      ...prev,
-      [listName]: prev[listName].filter((budget) => budget.id !== budgetId),
-    }));
-  };
-
-  const handleUpdateExpensePrice = (listName, budgetId, newPrice) => {
-    setBudgets((prev) => ({
-      ...prev,
-      [listName]: prev[listName].map((budget) =>
-        budget.id === budgetId ? { ...budget, price: newPrice } : expense,
-      ),
-    }));
-  };
 
   const handleSalaryChange = (budgetId, newSalary) => {
     const budget = budgets.find((budget) => budget._id === budgetId);
@@ -164,14 +186,17 @@ function App() {
           const totalExpenses = totalUtilityBills + totalSubscriptions;
           const salaryBalance = Number(budget.salary || 0) - totalExpenses;
           const finalBalance = salaryBalance - totalAdditionalBills;
-
           return (
             <MainCards
               key={budget._id}
               budget={budget}
+              onDateChange={handleDateChange}
               onAddExpenseToBudget={handleAddExpenseToBudget}
               onDeleteBudgetCard={handleDeleteBudgetCard}
               onSalaryChange={handleSalaryChange}
+              onUpdateExpensePrice={handleUpdateExpensePrice}
+              handleAddExpenseToBudget={handleAddExpenseToBudget}
+              handleDeleteExpense={handleDeleteExpense}
               totalUtilityBills={totalUtilityBills}
               totalSubscriptions={totalSubscriptions}
               totalExpenses={totalExpenses}

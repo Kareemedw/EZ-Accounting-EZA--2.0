@@ -23,7 +23,7 @@
           placeholder="Budget Name"
           minLength="2"
           maxLength="40"
-          required
+          
         />
         <button id="budget-type-input-error" className="modal__error"></button>
       </label>

@@ -1,10 +1,10 @@
 import "./SectionCards.css";
 
 function SalaryBalanceCard({
-  salary,
   formatMoney,
   totalExpenses,
   salaryBalance,
+  salary,
 }) {
   return (
     <div className="salary__balance-card">
@@ -16,10 +16,10 @@ function SalaryBalanceCard({
               Salary
               <input
                 id="salary-input-2"
-                type="number symbol"
+                type="text"
                 className="card__input"
                 placeholder="Salary"
-                value={salary}
+                value={salary ?? ""}
                 readOnly
               />
             </label>
@@ -34,7 +34,7 @@ function SalaryBalanceCard({
               Total Expenditure
               <input
                 id="total-expense-input"
-                type="number symbol"
+                type="text"
                 className="card__input"
                 placeholder="Total Expenditure"
                 value={formatMoney(totalExpenses)}
@@ -48,7 +48,7 @@ function SalaryBalanceCard({
               Balance
               <input
                 id="balance_input"
-                type="number symbol"
+                type="text"
                 className="card__input"
                 placeholder="Balance"
                 value={formatMoney(salaryBalance)}

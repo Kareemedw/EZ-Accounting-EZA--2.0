@@ -16,9 +16,11 @@ function MainCards({
   expenses,
   budget,
   budgetId,
+  onDateChange,
   onAddExpenseToBudget,
+  handleAddExpenseToBudget,
   onDeleteBudgetCard,
-  onDeleteExpense,
+  handleDeleteExpense,
   onUpdateExpensePrice,
   onSalaryChange,
   totalUtilityBills,
@@ -89,6 +91,8 @@ function MainCards({
             <div className="budget__card-body" id="budget-body">
               <SalaryCard
                 budgetId={budget._id}
+                date={budget.date}
+                onDateChange={onDateChange}
                 salary={budget.salary}
                 onSalaryChange={onSalaryChange}
                 finalBalance={finalBalance}
@@ -107,7 +111,8 @@ function MainCards({
                     : initialRecurringBill
                 }
                 onAddExpenseToBudget={onAddExpenseToBudget}
-                onDeleteExpense={onDeleteExpense}
+                onDeleteExpense={handleDeleteExpense}
+                handleAddExpenseToBudget={handleAddExpenseToBudget}
                 onUpdateExpensePrice={onUpdateExpensePrice}
                 totalUtilityBills={totalUtilityBills}
                 totalSubscriptions={totalSubscriptions}
@@ -122,17 +127,17 @@ function MainCards({
                     : initialAdditionalBills
                 }
                 onUpdateExpensePrice={onUpdateExpensePrice}
+                handleAddExpenseToBudget={handleAddExpenseToBudget}
                 onAddExpenseToBudget={onAddExpenseToBudget}
-                onDeleteExpense={onDeleteExpense}
+                onDeleteExpense={handleDeleteExpense}
                 totalAdditionalBills={totalAdditionalBills}
                 formatMoney={formatMoney}
                 finalBalance={finalBalance}
               />
               <SalaryBalanceCard
-                salary={expenses?.salary}
+                salary={budget.salary}
                 totalExpenses={totalExpenses}
                 salaryBalance={salaryBalance}
-                onSalaryChange={onSalaryChange}
                 formatMoney={formatMoney}
               />
             </div>

@@ -19,7 +19,7 @@ function ExtraExpenseList({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    onAddExpense(budgetId, listName, {
+    onAddExpenseToBudget(budgetId, listName, {
       name,
       price,
     });
@@ -45,7 +45,6 @@ function ExtraExpenseList({
               placeholder="Your expenses"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
             />
             <input
               id="tracking_balance_add"
@@ -54,14 +53,12 @@ function ExtraExpenseList({
               placeholder="Expense Price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              required
             />
             <button
               type="submit"
               className="add__btn"
               id="addBtn3"
               aria-label="Add"
-              onClick={handleSubmit}
             >
               Add
             </button>
@@ -73,9 +70,10 @@ function ExtraExpenseList({
         <h3 className="card__title_additional">Expense after bills</h3>
         <ul className="additionalExpense__list">
           {extraExpenses.map((extraBill) => (
-            <li className="balanceBill" key={extraBill.name}>
+            <li className="balanceBill" key={extraBill._id || extraBill.id}>
               <form
-                className="card__form_utitlity_bill  card__form_additional_expense"
+                className="card__form_utitlity_bill card__form_additional_expense"
+                onSubmit={handleSubmit}
                 id="utility-bill"
               >
                 <label
@@ -89,16 +87,27 @@ function ExtraExpenseList({
                   type="number"
                   className="card__input card__input_utility_bill balance__input balance-input1"
                   placeholder="Your expenses"
-                  defaultValue={extraBill.price}
+                  value={extraBill.price ?? ""}
                   onChange={(e) =>
-                    onUpdateExpensePrice(listName, extraBill.id, e.target.value)
+                    onUpdateExpensePrice(
+                      budgetId,
+                      listName,
+                      extraBill._id || extraBill.id,
+                      e.target.value,
+                    )
                   }
                 />
                 <button
                   type="button"
                   className="bill__delete-btn"
                   aria-label="Delete"
-                  onClick={() => onDeleteExpense(listName, extraBill.id)}
+                  onClick={() =>
+                    onDeleteExpense(
+                      budgetId,
+                      listName,
+                      extraBill._id || extraBill.id,
+                    )
+                  }
                 >
                   <img
                     src={deleteIcon}
