@@ -8,6 +8,7 @@ function UtilityList({
   expenses,
   listName,
   onAddExpenseToBudget,
+  onToggleExpensePaid,
   onDeleteExpense,
   onUpdateExpensePrice,
 }) {
@@ -70,11 +71,15 @@ function UtilityList({
             key={bill._id || bill.id}
             data-role="utilityBills"
           >
-            <form
-              className="card__form_utitlity_bill"
-              onSubmit={handleSubmit}
-              data-role="utility-bill"
-            >
+            <form className="card__form_utitlity_bill" data-role="utility-bill">
+              <input
+                type="checkbox"
+                className="checkbox__input"
+                checked={bill.paid || false}
+                onChange={() =>
+                  onToggleExpensePaid(budgetId, listName, bill._id || bill.id)
+                }
+              />
               <label
                 htmlFor="bills-input"
                 className="card__label card__label_utility_bill utilityBill"

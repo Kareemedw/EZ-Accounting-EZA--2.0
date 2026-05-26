@@ -8,6 +8,7 @@ function SubscriptionList({
   expenses,
   listName,
   onAddExpenseToBudget,
+  onToggleExpensePaid,
   onDeleteExpense,
   onUpdateExpensePrice,
 }) {
@@ -62,11 +63,19 @@ function SubscriptionList({
       <ul className="recurring__list">
         {expenses.map((recurring) => (
           <li className="recurringBills" key={recurring._id || recurring.id}>
-            <form
-              className="card__form_utitlity_bill"
-              onSubmit={handleSubmit}
-              id="utility-bill"
-            >
+            <form className="card__form_utitlity_bill" id="utility-bill">
+              <input
+                type="checkbox"
+                className="checkbox__input"
+                checked={recurring.paid || false}
+                onChange={() =>
+                  onToggleExpensePaid(
+                    budgetId,
+                    listName,
+                    recurring._id || recurring.id,
+                  )
+                }
+              />
               <label
                 htmlFor="subscription_input"
                 className="card__label card__label_utility_bill subscription-input recurringBill"

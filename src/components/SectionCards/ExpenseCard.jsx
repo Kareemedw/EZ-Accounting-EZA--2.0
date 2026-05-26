@@ -15,6 +15,7 @@ function ExpenseCard({
   onUpdateExpensePrice,
   totalUtilityBills,
   totalSubscriptions,
+  onToggleExpensePaid,
   totalExpenses,
   formatMoney,
 }) {
@@ -69,6 +70,7 @@ function ExpenseCard({
                   onAddExpenseToBudget={onAddExpenseToBudget}
                   onDeleteExpense={onDeleteExpense}
                   onUpdateExpensePrice={onUpdateExpensePrice}
+                  onToggleExpensePaid={onToggleExpensePaid}
                 />
                 <SubscriptionList
                   budgetId={budget._id}
@@ -77,6 +79,7 @@ function ExpenseCard({
                   onAddExpenseToBudget={onAddExpenseToBudget}
                   onDeleteExpense={onDeleteExpense}
                   onUpdateExpensePrice={onUpdateExpensePrice}
+                  onToggleExpensePaid={onToggleExpensePaid}
                 />
                 <TotalExpenseCard
                   totalUtilityBills={totalUtilityBills}

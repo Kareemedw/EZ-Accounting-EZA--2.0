@@ -18,6 +18,15 @@
   padding: 0;
 }
 
+.balance__list {
+  position: absolute;
+  left: 900px;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .card__utility_bill {
   display: flex;
   align-items: baseline;
@@ -58,6 +67,14 @@
   width: 30%;
 }
 
+.card__label-balance {
+  display: flex;
+  flex-direction: column;
+  margin: 0 20px;
+  max-width: 400px;
+  width: 90%;
+}
+
 .card__label_salary {
   margin: 0 auto;
 }
@@ -68,7 +85,7 @@
   align-items: center;
   margin-top: 20px;
   position: relative;
-  width: 50%;
+  width: 80%;
   max-width: 800px;
 }
 
@@ -83,6 +100,17 @@
   color: #212121;
   padding: 10px;
   opacity: 40%;
+}
+
+.checkbox__input {
+  box-sizing: border-box;
+  padding: 0;
+  position: absolute;
+  left: -20px;
+  top: 60px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }
 
 .card__input_utility_bill {
@@ -178,12 +206,6 @@
   border: none;
   display: flex;
   flex-direction: column;
-}
-
-.card__label_tracking {
-  position: absolute;
-  left: 800px;
-  top: 35px;
 }
 
 .card__label_tracking-total {

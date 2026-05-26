@@ -4,8 +4,11 @@ import penIcon from "../../assets/penIcon.svg";
 function SalaryCard({
   salary,
   date,
+  currentBalance,
+  currentBalanceAfterPaid,
   onDateChange,
   onSalaryChange,
+  onCurrentBalanceChange,
   budgetId,
   finalBalance,
   formatMoney,
@@ -56,25 +59,65 @@ function SalaryCard({
               />
             </label>
           </form>
-          <form
-            className="card__form card__balance_tracking"
-            id="balance-tracking"
-          >
-            <label
-              htmlFor="tracking-input"
-              className="card__label card__label_tracking"
+          <div className="balance__list">
+            <form
+              className="card__form card__previous-balance"
+              id="balance-tracking"
             >
-              Actual Balance
-              <input
-                id="tracking-inputs"
-                type="text"
-                className="card__input card__balance-input"
-                placeholder="Salary balance tracking"
-                value={formatMoney(finalBalance)}
-                readOnly
-              />
-            </label>
-          </form>
+              <label
+                htmlFor="previous__balance-input"
+                className="card__label-balance"
+              >
+                Starting Bank Balance
+                <input
+                  id="previous__balance-inputs"
+                  type="number"
+                  step="0.01"
+                  className="card__input card__balance-input"
+                  placeholder="Previous Bank Balance"
+                  value={currentBalance ?? ""}
+                  onChange={(e) =>
+                    onCurrentBalanceChange(budgetId, e.target.value)
+                  }
+                />
+              </label>
+            </form>
+            <form
+              className="card__form card__current-balance"
+              id="balance-tracking"
+            >
+              <label
+                htmlFor="current__balance-input"
+                className="card__label-balance"
+              >
+                Current Bank Balance
+                <input
+                  id="current__balance-inputs"
+                  type="text"
+                  className="card__input card__balance-input"
+                  placeholder="Current Bank Balance"
+                  value={formatMoney(currentBalanceAfterPaid)}
+                  readOnly
+                />
+              </label>
+            </form>
+            <form
+              className="card__form card__balance_tracking"
+              id="balance-tracking"
+            >
+              <label htmlFor="tracking-input" className="card__label-balance">
+                Actual Balance
+                <input
+                  id="tracking-inputs"
+                  type="text"
+                  className="card__input card__balance-input"
+                  placeholder="Salary balance tracking"
+                  value={formatMoney(finalBalance)}
+                  readOnly
+                />
+              </label>
+            </form>
+          </div>
         </div>
       </section>
     </div>

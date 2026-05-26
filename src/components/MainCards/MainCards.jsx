@@ -25,6 +25,10 @@ function MainCards({
   onSalaryChange,
   totalUtilityBills,
   totalSubscriptions,
+  onCurrentBalanceChange,
+  currentBalance,
+  currentBalanceAfterPaid,
+  onToggleExpensePaid,
   totalExpenses,
   salaryBalance,
   totalAdditionalBills,
@@ -97,6 +101,9 @@ function MainCards({
                 onSalaryChange={onSalaryChange}
                 finalBalance={finalBalance}
                 formatMoney={formatMoney}
+                currentBalance={budget.currentBalance}
+                currentBalanceAfterPaid={currentBalanceAfterPaid}
+                onCurrentBalanceChange={onCurrentBalanceChange}
               />
               <ExpenseCard
                 budget={budget}
@@ -114,6 +121,7 @@ function MainCards({
                 onDeleteExpense={handleDeleteExpense}
                 handleAddExpenseToBudget={handleAddExpenseToBudget}
                 onUpdateExpensePrice={onUpdateExpensePrice}
+                onToggleExpensePaid={onToggleExpensePaid}
                 totalUtilityBills={totalUtilityBills}
                 totalSubscriptions={totalSubscriptions}
                 totalExpenses={totalExpenses}
@@ -129,6 +137,7 @@ function MainCards({
                 onUpdateExpensePrice={onUpdateExpensePrice}
                 handleAddExpenseToBudget={handleAddExpenseToBudget}
                 onAddExpenseToBudget={onAddExpenseToBudget}
+                onToggleExpensePaid={onToggleExpensePaid}
                 onDeleteExpense={handleDeleteExpense}
                 totalAdditionalBills={totalAdditionalBills}
                 formatMoney={formatMoney}

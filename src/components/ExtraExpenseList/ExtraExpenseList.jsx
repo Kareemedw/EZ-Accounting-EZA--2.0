@@ -11,6 +11,7 @@ function ExtraExpenseList({
   onDeleteExpense,
   onUpdateExpensePrice,
   totalAdditionalBills,
+  onToggleExpensePaid,
   formatMoney,
 }) {
   const [name, setName] = useState("");
@@ -73,9 +74,20 @@ function ExtraExpenseList({
             <li className="balanceBill" key={extraBill._id || extraBill.id}>
               <form
                 className="card__form_utitlity_bill card__form_additional_expense"
-                onSubmit={handleSubmit}
                 id="utility-bill"
               >
+                <input
+                  type="checkbox"
+                  className="checkbox__input"
+                  checked={extraBill.paid || false}
+                  onChange={() =>
+                    onToggleExpensePaid(
+                      budgetId,
+                      listName,
+                      extraBill._id || bill.id,
+                    )
+                  }
+                />
                 <label
                   htmlFor="balance-input"
                   className="card__label card__label_utility_bill balanceBills"

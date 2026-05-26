@@ -32,6 +32,7 @@ function App() {
       name: "New Budget",
       salary: 0,
       date: "",
+      currentBalance: 0,
       utilityBills: initialBills,
       recurringBills: initialRecurringBill,
       additionalBills: initialAdditionalBills,
@@ -66,6 +67,31 @@ function App() {
         );
       })
       .catch(console.error);
+  };
+
+  /* Current Bank Balance*/
+  const handleCurrentBalanceChange = (budgetId, value) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      currentBalance: value,
+    });
+  };
+
+  const handleToggleExpensePaid = (budgetId, listName, expenseId) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      [listName]: budget[listName].map((expense) =>
+        (expense._id || expense.id) === expenseId
+          ? { ...expense, paid: !expense.paid }
+          : expense,
+      ),
+    });
   };
 
   /*Application Functionality*/
@@ -186,6 +212,27 @@ function App() {
           const totalExpenses = totalUtilityBills + totalSubscriptions;
           const salaryBalance = Number(budget.salary || 0) - totalExpenses;
           const finalBalance = salaryBalance - totalAdditionalBills;
+          const paidUtilityTotal = budget.utilityBills.reduce(
+            (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
+            0,
+          );
+
+          const paidRecurringTotal = budget.recurringBills.reduce(
+            (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
+            0,
+          );
+
+          const paidAdditionalTotal = budget.recurringBills.reduce(
+            (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
+            0,
+          );
+
+          const currentBalanceAfterPaid =
+            Number(budget.currentBalance || 0) -
+            paidUtilityTotal -
+            paidRecurringTotal -
+            paidAdditionalTotal;
+
           return (
             <MainCards
               key={budget._id}
@@ -197,6 +244,9 @@ function App() {
               onUpdateExpensePrice={handleUpdateExpensePrice}
               handleAddExpenseToBudget={handleAddExpenseToBudget}
               handleDeleteExpense={handleDeleteExpense}
+              onCurrentBalanceChange={handleCurrentBalanceChange}
+              onToggleExpensePaid={handleToggleExpensePaid}
+              currentBalanceAfterPaid={currentBalanceAfterPaid}
               totalUtilityBills={totalUtilityBills}
               totalSubscriptions={totalSubscriptions}
               totalExpenses={totalExpenses}

@@ -10,6 +10,7 @@ function ExpenseAfterBillsCard({
   onUpdateExpensePrice,
   onDeleteExpense,
   onAddExpenseToBudget,
+  onToggleExpensePaid,
   totalAdditionalBills,
   formatMoney,
 }) {
@@ -71,6 +72,7 @@ function ExpenseAfterBillsCard({
                 onUpdateExpensePrice={onUpdateExpensePrice}
                 formatMoney={formatMoney}
                 totalAdditionalBills={totalAdditionalBills}
+                onToggleExpensePaid={onToggleExpensePaid}
               />
             </div>
           </div>
