@@ -17,3 +17,27 @@
 .page__content {
   flex: 1;
 }
+
+.nav__container {
+  display: flex;
+  gap: 20px;
+  margin: 20px;
+  justify-content: center;
+  border-bottom: 1px solid #000;
+}
+
+.nav__link {
+  color: #212121;
+  text-decoration: none;
+  cursor: pointer;
+  margin: 20px;
+}
+
+.nav__link_active {
+  border-bottom: 2px solid black;
+  font-weight: 700;
+}
+
+.page__title {
+  margin: 0 0 24px;
+}

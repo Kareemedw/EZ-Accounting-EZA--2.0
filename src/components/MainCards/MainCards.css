@@ -35,6 +35,7 @@
   overflow: hidden;
   transition: box-shadow 0.25s ease;
   margin-top: 15px;
+  margin-bottom: 75px;
 }
 
 .budget__card-body {

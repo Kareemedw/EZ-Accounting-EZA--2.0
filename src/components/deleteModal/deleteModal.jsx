@@ -19,7 +19,7 @@ function DeleteModal({ isOpen, onClose, onConfirm }) {
           <img src={closeBtn} alt="X-Icon" className="modal__close-icon" />
         </button>
         <h2 className="modalForm__title modalForm__title-delete_caption">
-          Are you sure you want to delete this image?
+          Are you sure you want to delete this card?
         </h2>
         <form className="modal__form modal__form-delete" id="delete-form">
           <button

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import { Routes, Route, Link, useLocation, NavLink } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
+import History from "../History/History";
 import MainCards from "../MainCards/MainCards";
 import {
   initialBills,
@@ -30,6 +32,19 @@ function App() {
 
   const [selectedBudget, setSelectedBudget] = useState(null);
 
+  const location = useLocation();
+
+  const pageTitle =
+    location.pathname === "/history"
+      ? "Budget History"
+      : location.pathname === "/salarysection"
+        ? "Salary Section"
+        : location.pathname === "/groceries"
+          ? "Grocery Section"
+          : location.pathname === "/carpaymentsection"
+            ? "Car Payment Section"
+            : "My Budgets";
+
   const handleBudgetClick = (budget) => {
     setSelectedBudget(budget);
     setActiveModal("New Budget");
@@ -40,6 +55,9 @@ function App() {
 
   /* Budgets*/
   const [budgets, setBudgets] = useState([]);
+
+  const mainBudgets = budgets.slice(0, 3);
+  const historyBudgets = budgets.slice(3);
 
   useEffect(() => {
     getBudgets()
@@ -239,96 +257,155 @@ function App() {
     return `$${number.toFixed(2)}`;
   };
 
+  const renderBudgetCard = (budget) => {
+    const totalUtilityBills = budget.utilityBills.reduce(
+      (total, bill) => total + Number(bill.price || 0),
+      0,
+    );
+
+    const totalSubscriptions = budget.recurringBills.reduce(
+      (total, bill) => total + Number(bill.price || 0),
+      0,
+    );
+
+    const totalAdditionalBills = budget.additionalBills.reduce(
+      (total, bill) => total + Number(bill.price || 0),
+      0,
+    );
+
+    const totalExpenses = totalUtilityBills + totalSubscriptions;
+    const salaryBalance = Number(budget.salary || 0) - totalExpenses;
+    const finalBalance = salaryBalance - totalAdditionalBills;
+    const paidUtilityTotal = budget.utilityBills.reduce(
+      (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
+      0,
+    );
+
+    const paidRecurringTotal = budget.recurringBills.reduce(
+      (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
+      0,
+    );
+
+    const paidAdditionalTotal = budget.additionalBills.reduce(
+      (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
+      0,
+    );
+
+    const currentBalanceAfterPaid =
+      Number(budget.currentBalance || 0) -
+      paidUtilityTotal -
+      paidRecurringTotal -
+      paidAdditionalTotal;
+    return (
+      <MainCards
+        key={budget._id}
+        budget={budget}
+        onDateChange={handleDateChange}
+        onAddExpenseToBudget={handleAddExpenseToBudget}
+        onDeleteBudgetCard={handleDeleteBudgetCard}
+        onSalaryChange={handleSalaryChange}
+        onUpdateExpensePrice={handleUpdateExpensePrice}
+        handleAddExpenseToBudget={handleAddExpenseToBudget}
+        handleDeleteExpense={handleDeleteExpense}
+        onCurrentBalanceChange={handleCurrentBalanceChange}
+        onToggleExpensePaid={handleToggleExpensePaid}
+        currentBalanceAfterPaid={currentBalanceAfterPaid}
+        totalUtilityBills={totalUtilityBills}
+        totalSubscriptions={totalSubscriptions}
+        totalExpenses={totalExpenses}
+        salaryBalance={salaryBalance}
+        totalAdditionalBills={totalAdditionalBills}
+        finalBalance={finalBalance}
+        formatMoney={formatMoney}
+        onOpenBudgetModal={() => handleBudgetClick(budget)}
+        onOpenBillModal={() => setActiveModal("bills")}
+        onOpenExtraBillModal={() => setActiveModal("Extra Spending")}
+        onDeleteModal={() => setActiveModal("delete")}
+        onOpenDeleteModal={() => handleOpenDeleteModal(budget)}
+      />
+    );
+  };
+
   return (
     <div className="page">
       <div className="page__content">
         <Header />
-        <h2>My Budgets</h2>
-        {budgets.map((budget) => {
-          const totalUtilityBills = budget.utilityBills.reduce(
-            (total, bill) => total + Number(bill.price || 0),
-            0,
-          );
 
-          const totalSubscriptions = budget.recurringBills.reduce(
-            (total, bill) => total + Number(bill.price || 0),
-            0,
-          );
+        <nav className="nav__container">
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "nav__link nav__link_active" : "nav__link"
+            }
+            to="/"
+          >
+            Home
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "nav__link nav__link_active" : "nav__link"
+            }
+            to="/salary"
+          >
+            Salary Section
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "nav__link nav__link_active" : "nav__link"
+            }
+            to="/groceries"
+          >
+            Grocery Section
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "nav__link nav__link_active" : "nav__link"
+            }
+            to="/carpaymentsection"
+          >
+            Car Payment Section
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "nav__link nav__link_active" : "nav__link"
+            }
+            to="/history"
+          >
+            History
+          </NavLink>
+        </nav>
 
-          const totalAdditionalBills = budget.additionalBills.reduce(
-            (total, bill) => total + Number(bill.price || 0),
-            0,
-          );
+        <h2 className="page__title">{pageTitle}</h2>
 
-          const totalExpenses = totalUtilityBills + totalSubscriptions;
-          const salaryBalance = Number(budget.salary || 0) - totalExpenses;
-          const finalBalance = salaryBalance - totalAdditionalBills;
-          const paidUtilityTotal = budget.utilityBills.reduce(
-            (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
-            0,
-          );
-
-          const paidRecurringTotal = budget.recurringBills.reduce(
-            (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
-            0,
-          );
-
-          const paidAdditionalTotal = budget.additionalBills.reduce(
-            (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
-            0,
-          );
-
-          const currentBalanceAfterPaid =
-            Number(budget.currentBalance || 0) -
-            paidUtilityTotal -
-            paidRecurringTotal -
-            paidAdditionalTotal;
-
-          return (
-            <MainCards
-              key={budget._id}
-              budget={budget}
-              onDateChange={handleDateChange}
-              onAddExpenseToBudget={handleAddExpenseToBudget}
-              onDeleteBudgetCard={handleDeleteBudgetCard}
-              onSalaryChange={handleSalaryChange}
-              onUpdateExpensePrice={handleUpdateExpensePrice}
-              handleAddExpenseToBudget={handleAddExpenseToBudget}
-              handleDeleteExpense={handleDeleteExpense}
-              onCurrentBalanceChange={handleCurrentBalanceChange}
-              onToggleExpensePaid={handleToggleExpensePaid}
-              currentBalanceAfterPaid={currentBalanceAfterPaid}
-              totalUtilityBills={totalUtilityBills}
-              totalSubscriptions={totalSubscriptions}
-              totalExpenses={totalExpenses}
-              salaryBalance={salaryBalance}
-              totalAdditionalBills={totalAdditionalBills}
-              finalBalance={finalBalance}
-              formatMoney={formatMoney}
-              onOpenBudgetModal={() => handleBudgetClick(budget)}
-              onOpenBillModal={() => setActiveModal("bills")}
-              onOpenExtraBillModal={() => setActiveModal("Extra Spending")}
-              onDeleteModal={() => setActiveModal("delete")}
-              onOpenDeleteModal={() => handleOpenDeleteModal(budget)}
-            />
-          );
-        })}
-        <button
-          className="add__budget-btn"
-          id="add-budget"
-          onClick={handleAddBudget}
-        >
-          + Add New Budget
-        </button>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                {mainBudgets.map(renderBudgetCard)}
+                <button className="add__budget-btn" onClick={handleAddBudget}>
+                  + Add New Budget
+                </button>
+              </>
+            }
+          />
+          <Route path="/salary" element={<></>} />
+          <Route path="/groceries" element={<></>} />
+          <Route path="/carpaymentsection" element={<></>} />
+          <Route
+            path="/history"
+            element={<>{historyBudgets.map(renderBudgetCard)}</>}
+          />
+        </Routes>
       </div>
+
       <Footer />
+
       <BudgetModal
         isOpen={activeModal === "New Budget"}
         onClose={closeModal}
         onSubmit={handleAddBudgetName}
         currentName={selectedBudget?.name}
       />
-
       <BillModal
         isOpen={activeModal === "bills"}
         onClose={closeModal}
