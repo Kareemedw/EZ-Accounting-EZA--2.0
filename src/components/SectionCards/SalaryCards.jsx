@@ -68,7 +68,7 @@ function SalaryCard({
                 htmlFor="previous__balance-input"
                 className="card__label-balance"
               >
-                Starting Bank Balance
+                Projected Bank Balance
                 <input
                   id="previous__balance-inputs"
                   type="number"
@@ -90,7 +90,7 @@ function SalaryCard({
                 htmlFor="current__balance-input"
                 className="card__label-balance"
               >
-                Current Bank Balance
+                Projected Actual Balance
                 <input
                   id="current__balance-inputs"
                   type="text"
@@ -106,7 +106,7 @@ function SalaryCard({
               id="balance-tracking"
             >
               <label htmlFor="tracking-input" className="card__label-balance">
-                Actual Balance
+                Balance left from this months salary
                 <input
                   id="tracking-inputs"
                   type="text"

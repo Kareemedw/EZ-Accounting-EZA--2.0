@@ -15,6 +15,8 @@ import {
 function MainCards({
   expenses,
   budget,
+  onOpenBudgetModal,
+  onOpenDeleteModal,
   budgetId,
   onDateChange,
   onAddExpenseToBudget,
@@ -44,8 +46,6 @@ function MainCards({
   return (
     <div className="content">
       <section className="budgets page__section" id="overall-budget-body">
-        <h2>My Budgets</h2>
-
         <section className="budget__card" id="add-budget-form">
           <div
             className="budget__card-header"
@@ -57,7 +57,10 @@ function MainCards({
                 type="button"
                 className="budget__card-title"
                 id="edit-budget-name"
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onOpenBudgetModal();
+                }}
                 data-no-toggle="true"
                 aria-label="Open"
               >
@@ -72,7 +75,7 @@ function MainCards({
               aria-label="Delete"
               onClick={(e) => {
                 e.stopPropagation();
-                onDeleteBudgetCard(budget._id);
+                onOpenDeleteModal();
               }}
               data-no-toggle="true"
             >

@@ -14,15 +14,37 @@ import {
   deleteBudget,
 } from "../../utils/app";
 import "./App.css";
+import BudgetModal from "../cardModal/budgetCardModal";
+import BillModal from "../cardModal/billCardModal";
+import ExtraBillModal from "../cardModal/extraBillModalCard";
+import DeleteModal from "../deleteModal/deleteModal";
 
 function App() {
+  /* Modals */
+  const [activeModal, setActiveModal] = useState("");
+
+  const closeModal = () => {
+    setActiveModal("");
+    setSelectedBudget(null);
+  };
+
+  const [selectedBudget, setSelectedBudget] = useState(null);
+
+  const handleBudgetClick = (budget) => {
+    setSelectedBudget(budget);
+    setActiveModal("New Budget");
+  };
+
+  const handleBillClick = () => setActiveModal("bill");
+  const handleExtraSpendingClick = () => setActiveModal("extra-bill");
+
   /* Budgets*/
   const [budgets, setBudgets] = useState([]);
 
   useEffect(() => {
     getBudgets()
       .then((data) => {
-        setBudgets(data);
+        setBudgets([...data].reverse());
       })
       .catch(console.error);
   }, []);
@@ -36,9 +58,13 @@ function App() {
       utilityBills: initialBills,
       recurringBills: initialRecurringBill,
       additionalBills: initialAdditionalBills,
+      BudgetModal: "",
+      BillModal: "bills",
+      ExtraBillModal: "Extra Spending",
+      DeleteModal: "delete",
     })
       .then((res) => {
-        setBudgets([res.data, ...budgets]);
+        setBudgets((prevBudgets) => [res.data, ...prevBudgets]);
       })
       .catch(console.error);
   };
@@ -59,6 +85,18 @@ function App() {
     handleSaveBudget(budgetId, updatedBudget);
   };
 
+  const handleAddBudgetName = (newName) => {
+    if (!selectedBudget) return;
+
+    const updatedBudget = {
+      ...selectedBudget,
+      name: newName,
+    };
+
+    handleSaveBudget(selectedBudget._id, updatedBudget);
+    closeModal();
+  };
+
   const handleSaveBudget = (budgetId, updatedData) => {
     updateBudget(budgetId, updatedData)
       .then((res) => {
@@ -67,6 +105,18 @@ function App() {
         );
       })
       .catch(console.error);
+  };
+
+  const handleOpenDeleteModal = (budget) => {
+    setSelectedBudget(budget);
+    setActiveModal("delete");
+  };
+
+  const handleConfirmDeleteBudget = () => {
+    if (!selectedBudget) return;
+
+    handleDeleteBudgetCard(selectedBudget._id);
+    closeModal();
   };
 
   /* Current Bank Balance*/
@@ -193,6 +243,7 @@ function App() {
     <div className="page">
       <div className="page__content">
         <Header />
+        <h2>My Budgets</h2>
         {budgets.map((budget) => {
           const totalUtilityBills = budget.utilityBills.reduce(
             (total, bill) => total + Number(bill.price || 0),
@@ -222,7 +273,7 @@ function App() {
             0,
           );
 
-          const paidAdditionalTotal = budget.recurringBills.reduce(
+          const paidAdditionalTotal = budget.additionalBills.reduce(
             (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
             0,
           );
@@ -254,6 +305,11 @@ function App() {
               totalAdditionalBills={totalAdditionalBills}
               finalBalance={finalBalance}
               formatMoney={formatMoney}
+              onOpenBudgetModal={() => handleBudgetClick(budget)}
+              onOpenBillModal={() => setActiveModal("bills")}
+              onOpenExtraBillModal={() => setActiveModal("Extra Spending")}
+              onDeleteModal={() => setActiveModal("delete")}
+              onOpenDeleteModal={() => handleOpenDeleteModal(budget)}
             />
           );
         })}
@@ -266,6 +322,30 @@ function App() {
         </button>
       </div>
       <Footer />
+      <BudgetModal
+        isOpen={activeModal === "New Budget"}
+        onClose={closeModal}
+        onSubmit={handleAddBudgetName}
+        currentName={selectedBudget?.name}
+      />
+
+      <BillModal
+        isOpen={activeModal === "bills"}
+        onClose={closeModal}
+        onSubmit={handleBillClick}
+      />
+
+      <ExtraBillModal
+        isOpen={activeModal === "Extra Spending"}
+        onClose={closeModal}
+        onSubmit={handleExtraSpendingClick}
+      />
+
+      <DeleteModal
+        isOpen={activeModal === "delete"}
+        onClose={closeModal}
+        onConfirm={handleConfirmDeleteBudget}
+      />
     </div>
   );
 }

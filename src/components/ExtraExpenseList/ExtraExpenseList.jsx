@@ -84,7 +84,7 @@ function ExtraExpenseList({
                     onToggleExpensePaid(
                       budgetId,
                       listName,
-                      extraBill._id || bill.id,
+                      extraBill._id || extraBill.id,
                     )
                   }
                 />

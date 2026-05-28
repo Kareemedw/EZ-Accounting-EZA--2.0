@@ -84,4 +84,7 @@
   background-color: #000000;
   color: #fff;
   border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

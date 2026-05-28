@@ -3,12 +3,14 @@ import closeButton from "../../assets/closeButton.svg";
 
 function ModalWithForm({
   children,
-  buttonText,
+  buttonText = "Update",
   title,
-  name = "add-garment",
   onClose,
   isOpen,
   onSubmit,
+  listName,
+  budgetId,
+  onAddBudgetName,
 }) {
   return (
     <div
