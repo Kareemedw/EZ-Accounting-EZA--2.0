@@ -33,3 +33,10 @@ export const deleteBudget = (budgetId) => {
     method: "DELETE",
   }).then(checkResponse);
 };
+
+export const updatePhoto = (update) => {
+  return fetch(`${baseUrl}/photos/${update}`, {
+    method: "POST",
+    body: formData,
+  });
+};
