@@ -11,6 +11,9 @@ function UtilityList({
   onToggleExpensePaid,
   onDeleteExpense,
   onUpdateExpensePrice,
+  totalGrocerySpent,
+  totalTrainPassSpent,
+  formatMoney,
 }) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -65,59 +68,113 @@ function UtilityList({
         </form>
       </div>
       <ul className="utility__list">
-        {expenses.map((bill) => (
-          <li
-            className="utilityBills"
-            key={bill._id || bill.id}
-            data-role="utilityBills"
-          >
-            <form className="card__form_utitlity_bill" data-role="utility-bill">
-              <input
-                type="checkbox"
-                className="checkbox__input"
-                checked={bill.paid || false}
-                onChange={() =>
-                  onToggleExpensePaid(budgetId, listName, bill._id || bill.id)
-                }
-              />
-              <label
-                htmlFor="bills-input"
-                className="card__label card__label_utility_bill utilityBill"
-                data-role="utility-bill1"
+        {expenses.map((bill) => {
+          const isGrocery = bill.name === "Grocery";
+          const isTrainPass = bill.name === "Train pass";
+          const isSpecialExpense = isGrocery || isTrainPass;
+
+          return (
+            <li
+              className="utilityBills"
+              key={bill._id || bill.id}
+              data-role="utilityBills"
+            >
+              <form
+                className="card__form_utitlity_bill"
+                data-role="utility-bill"
               >
-                {bill.name}
-              </label>
-              <input
-                type="number"
-                value={bill.price ?? ""}
-                onChange={(e) =>
-                  onUpdateExpensePrice(
-                    budgetId,
-                    listName,
-                    bill._id || bill.id,
-                    e.target.value,
-                  )
-                }
-                className="card__input card__input_utility_bill bills-input"
-                placeholder="Your expenses"
-              />
-              <button
-                type="button"
-                className="bill__delete-btn"
-                aria-label="Delete"
-                onClick={() =>
-                  onDeleteExpense(budgetId, listName, bill._id || bill.id)
-                }
-              >
-                <img
-                  src={deleteIcon}
-                  alt="Delete Icon"
-                  className="bill__delete-icon"
+                <input
+                  type="checkbox"
+                  className="checkbox__input"
+                  checked={bill.paid || false}
+                  onChange={() =>
+                    onToggleExpensePaid(budgetId, listName, bill._id || bill.id)
+                  }
                 />
-              </button>
-            </form>
-          </li>
-        ))}
+                <label
+                  htmlFor="bills-input"
+                  className="card__label card__label_utility_bill utilityBill"
+                  data-role="utility-bill1"
+                >
+                  {bill.name}
+                </label>
+                {isSpecialExpense ? (
+                  <div className="special__inputs">
+                    <input
+                      type="number"
+                      step="0.01"
+                      className="card__input special__budget-input"
+                      placeholder={
+                        isGrocery
+                          ? "Grocery budget"
+                          : isTrainPass
+                            ? "Train Pass budget"
+                            : "Budget"
+                      }
+                      value={bill.price ?? ""}
+                      onChange={(e) =>
+                        onUpdateExpensePrice(
+                          budgetId,
+                          listName,
+                          bill._id || bill.id,
+                          e.target.value,
+                        )
+                      }
+                    />
+
+                    <input
+                      type="text"
+                      className="card__input  specail__spent-input"
+                      placeholder={
+                        isGrocery
+                          ? "Grocery spent"
+                          : isTrainPass
+                            ? "Train Pass spent"
+                            : "Spent"
+                      }
+                      value={
+                        isGrocery
+                          ? formatMoney(totalGrocerySpent)
+                          : formatMoney(totalTrainPassSpent)
+                      }
+                      readOnly
+                    />
+                  </div>
+                ) : (
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={bill.price ?? ""}
+                    onChange={(e) =>
+                      onUpdateExpensePrice(
+                        budgetId,
+                        listName,
+                        bill._id || bill.id,
+                        e.target.value,
+                      )
+                    }
+                    className="card__input card__input_utility_bill bills-input"
+                    placeholder="Your expenses"
+                  />
+                )}
+                <button
+                  type="button"
+                  className={`bill__delete-btn ${isGrocery ? "grocery__delete-btn" : ""}`}
+                  aria-label="Delete"
+                  onClick={() =>
+                    onDeleteExpense(budgetId, listName, bill._id || bill.id)
+                  }
+                >
+                  <img
+                    src={deleteIcon}
+                    alt="Delete Icon"
+                    className="bill__delete-icon"
+                  />
+                </button>
+              </form>
+            </li>
+          );
+        })}
       </ul>
     </ul>
   );

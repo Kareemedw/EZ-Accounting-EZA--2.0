@@ -4,6 +4,8 @@ import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import History from "../History/History";
 import MainCards from "../MainCards/MainCards";
+import GrocerySection from "../GrocerySection/GrocerySection";
+import TrainPassSection from "../TrainPassSection/TrainPassSection";
 import {
   initialBills,
   initialRecurringBill,
@@ -58,6 +60,8 @@ function App() {
 
   const mainBudgets = budgets.slice(0, 3);
   const historyBudgets = budgets.slice(3);
+  const groceryBudgets = budgets.slice(0, 1);
+  const trainPassBudgets = budgets.slice(0, 1);
 
   useEffect(() => {
     getBudgets()
@@ -73,7 +77,12 @@ function App() {
       salary: 0,
       date: "",
       currentBalance: 0,
+      isOpen: false,
       utilityBills: initialBills,
+      groceryBudget: "",
+      groceryItems: [],
+      trainPassBudget: "",
+      trainPassItems: [],
       recurringBills: initialRecurringBill,
       additionalBills: initialAdditionalBills,
       BudgetModal: "",
@@ -85,6 +94,16 @@ function App() {
         setBudgets((prevBudgets) => [res.data, ...prevBudgets]);
       })
       .catch(console.error);
+  };
+
+  const handleToggleBudgetOpen = (budgetId) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      isOpen: !budget.isOpen,
+    });
   };
 
   const handleDateChange = (budgetId, newDate) => {
@@ -135,6 +154,78 @@ function App() {
 
     handleDeleteBudgetCard(selectedBudget._id);
     closeModal();
+  };
+
+  /*Grocery Section */
+  const handleGroceryBudgetChange = (budgetId, value) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      groceryBudget: value,
+    });
+  };
+
+  const handleAddGroceryItem = (budgetId, newItem) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      groceryItems: [
+        ...(budget.groceryItems || []),
+        { id: crypto.randomUUID(), ...newItem },
+      ],
+    });
+  };
+
+  const handleDeleteGroceryItem = (budgetId, groceryId) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      groceryItems: budget.groceryItems.filter(
+        (item) => (item._id || item.id) !== groceryId,
+      ),
+    });
+  };
+
+  /*Train Pass Section */
+  const handleTrainPassBudgetChange = (budgetId, value) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      trainPassBudget: value,
+    });
+  };
+
+  const handleAddTrainPassItem = (budgetId, newItem) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      trainPassItems: [
+        ...(budget.trainPassItems || []),
+        { id: crypto.randomUUID(), ...newItem },
+      ],
+    });
+  };
+
+  const handleDeleteTrainPassItem = (budgetId, itemId) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      trainPassItems: (budget.trainPassItems || []).filter(
+        (item) => (item._id || item.id) !== itemId,
+      ),
+    });
   };
 
   /* Current Bank Balance*/
@@ -257,7 +348,7 @@ function App() {
     return `$${number.toFixed(2)}`;
   };
 
-  const renderBudgetCard = (budget) => {
+  const renderBudgetCard = (budget, index) => {
     const totalUtilityBills = budget.utilityBills.reduce(
       (total, bill) => total + Number(bill.price || 0),
       0,
@@ -270,6 +361,16 @@ function App() {
 
     const totalAdditionalBills = budget.additionalBills.reduce(
       (total, bill) => total + Number(bill.price || 0),
+      0,
+    );
+
+    const totalGrocerySpent = (budget.groceryItems || []).reduce(
+      (total, item) => total + Number(item.price || 0),
+      0,
+    );
+
+    const totalTrainPassSpent = (budget.trainPassItems || []).reduce(
+      (total, item) => total + Number(item.price || 0),
       0,
     );
 
@@ -291,6 +392,15 @@ function App() {
       0,
     );
 
+    const previousBudget = mainBudgets[index + 1];
+
+    const previousProjectedActualBalance = previousBudget
+      ? Number(previousBudget.currentBalanceAfterPaid || 0)
+      : 0;
+
+    const projectedBankBalance =
+      previousProjectedActualBalance + Number(budget.salary || 0);
+
     const currentBalanceAfterPaid =
       Number(budget.currentBalance || 0) -
       paidUtilityTotal -
@@ -300,6 +410,7 @@ function App() {
       <MainCards
         key={budget._id}
         budget={budget}
+        onToggleBudgetOpen={handleToggleBudgetOpen}
         onDateChange={handleDateChange}
         onAddExpenseToBudget={handleAddExpenseToBudget}
         onDeleteBudgetCard={handleDeleteBudgetCard}
@@ -322,6 +433,51 @@ function App() {
         onOpenExtraBillModal={() => setActiveModal("Extra Spending")}
         onDeleteModal={() => setActiveModal("delete")}
         onOpenDeleteModal={() => handleOpenDeleteModal(budget)}
+        totalGrocerySpent={totalGrocerySpent}
+        totalTrainPassSpent={totalTrainPassSpent}
+        projectedBankBalance={projectedBankBalance}
+      />
+    );
+  };
+
+  const renderGroceryPage = (budget) => {
+    const totalGrocerySpent = (budget.groceryItems || []).reduce(
+      (total, item) => total + Number(item.price || 0),
+      0,
+    );
+
+    return (
+      <GrocerySection
+        key={budget._id}
+        budgetId={budget._id}
+        groceryBudget={budget.groceryBudget}
+        groceryItems={budget.groceryItems || []}
+        totalGrocerySpent={totalGrocerySpent}
+        onGroceryBudgetChange={handleGroceryBudgetChange}
+        onAddGroceryItem={handleAddGroceryItem}
+        onDeleteGroceryItem={handleDeleteGroceryItem}
+        formatMoney={formatMoney}
+      />
+    );
+  };
+
+  const renderTrainPassPage = (budget) => {
+    const totalTrainPassSpent = (budget.trainPassItems || []).reduce(
+      (total, item) => total + Number(item.price || 0),
+      0,
+    );
+
+    return (
+      <TrainPassSection
+        key={budget._id}
+        budgetId={budget._id}
+        trainPassBudget={budget.trainPassBudget}
+        trainPassItems={budget.trainPassItems || []}
+        totalTrainPassSpent={totalTrainPassSpent}
+        onTrainPassBudgetChange={handleTrainPassBudgetChange}
+        onAddTrainPassItem={handleAddTrainPassItem}
+        onDeleteTrainPassItem={handleDeleteTrainPassItem}
+        formatMoney={formatMoney}
       />
     );
   };
@@ -344,14 +500,6 @@ function App() {
             className={({ isActive }) =>
               isActive ? "nav__link nav__link_active" : "nav__link"
             }
-            to="/salary"
-          >
-            Salary Section
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "nav__link nav__link_active" : "nav__link"
-            }
             to="/groceries"
           >
             Grocery Section
@@ -360,9 +508,17 @@ function App() {
             className={({ isActive }) =>
               isActive ? "nav__link nav__link_active" : "nav__link"
             }
-            to="/carpaymentsection"
+            to="/trainpass"
           >
-            Car Payment Section
+            Train Pass Section
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "nav__link nav__link_active" : "nav__link"
+            }
+            to="/carpaymentpage"
+          >
+            Car Payment Page
           </NavLink>
           <NavLink
             className={({ isActive }) =>
@@ -388,9 +544,15 @@ function App() {
               </>
             }
           />
-          <Route path="/salary" element={<></>} />
-          <Route path="/groceries" element={<></>} />
-          <Route path="/carpaymentsection" element={<></>} />
+          <Route
+            path="/groceries"
+            element={<>{groceryBudgets.map(renderGroceryPage)}</>}
+          />
+          <Route
+            path="/trainpass"
+            element={<>{trainPassBudgets.map(renderTrainPassPage)}</>}
+          />
+          <Route path="/carpaymentpage" element={<></>} />
           <Route
             path="/history"
             element={<>{historyBudgets.map(renderBudgetCard)}</>}

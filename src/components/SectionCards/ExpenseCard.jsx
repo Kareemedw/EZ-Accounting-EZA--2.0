@@ -17,6 +17,8 @@ function ExpenseCard({
   totalSubscriptions,
   onToggleExpensePaid,
   totalExpenses,
+  totalGrocerySpent,
+  totalTrainPassSpent,
   formatMoney,
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -71,6 +73,9 @@ function ExpenseCard({
                   onDeleteExpense={onDeleteExpense}
                   onUpdateExpensePrice={onUpdateExpensePrice}
                   onToggleExpensePaid={onToggleExpensePaid}
+                  totalGrocerySpent={totalGrocerySpent}
+                  totalTrainPassSpent={totalTrainPassSpent}
+                  formatMoney={formatMoney}
                 />
                 <SubscriptionList
                   budgetId={budget._id}

@@ -75,3 +75,11 @@
   margin: 0;
   list-style: none;
 }
+
+.special__inputs input:first-child {
+  border: 2px solid green;
+}
+
+.special__inputs input:last-child {
+  border: 2px solid blue;
+}

@@ -15,6 +15,7 @@ import {
 function MainCards({
   expenses,
   budget,
+  onToggleBudgetOpen,
   onOpenBudgetModal,
   onOpenDeleteModal,
   budgetId,
@@ -34,13 +35,15 @@ function MainCards({
   totalExpenses,
   salaryBalance,
   totalAdditionalBills,
+  totalGrocerySpent,
+  totalTrainPassSpent,
   finalBalance,
   formatMoney,
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const isOpen = budget.isOpen || false;
 
   const handleToggleBudgetCard = () => {
-    setIsOpen((prev) => !prev);
+    onToggleBudgetOpen(budget._id);
   };
 
   return (
@@ -128,6 +131,8 @@ function MainCards({
                 totalUtilityBills={totalUtilityBills}
                 totalSubscriptions={totalSubscriptions}
                 totalExpenses={totalExpenses}
+                totalGrocerySpent={totalGrocerySpent}
+                totalTrainPassSpent={totalTrainPassSpent}
                 formatMoney={formatMoney}
               />
               <ExpenseAfterBillsCard
