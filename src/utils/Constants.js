@@ -15,11 +15,9 @@ export const initialRecurringBill = [
   { id: crypto.randomUUID(), name: "Hulu", price: "", paid: false },
   { id: crypto.randomUUID(), name: "BootCamp", price: "", paid: false },
   { id: crypto.randomUUID(), name: "Car Payment", price: "", paid: false },
-  { id: crypto.randomUUID(), name: "Gas for Car", price: "", paid: false },
   { id: crypto.randomUUID(), name: "Google Play", price: "", paid: false },
   { id: crypto.randomUUID(), name: "Youtube Premium", price: "", paid: false },
   { id: crypto.randomUUID(), name: "Amazon Prime", price: "", paid: false },
-  { id: crypto.randomUUID(), name: "Car Wash", price: "", paid: false },
   { id: crypto.randomUUID(), name: "ChatGPT", price: "", paid: false },
   { id: crypto.randomUUID(), name: "Crunchyroll", price: "", paid: false },
 ];

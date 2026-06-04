@@ -169,6 +169,14 @@
   top: 80px;
 }
 
+.train__delete-btn {
+  top: 80px;
+}
+
+.carPayment__delete-btn {
+  top: 80px;
+}
+
 .bill__delete-btn:hover {
   background-color: #ff6565;
   border-radius: 50%;

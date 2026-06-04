@@ -6,6 +6,7 @@ import History from "../History/History";
 import MainCards from "../MainCards/MainCards";
 import GrocerySection from "../GrocerySection/GrocerySection";
 import TrainPassSection from "../TrainPassSection/TrainPassSection";
+import CarPaymentSection from "../CarPaymentSection/CarPaymentSection";
 import {
   initialBills,
   initialRecurringBill,
@@ -62,6 +63,7 @@ function App() {
   const historyBudgets = budgets.slice(3);
   const groceryBudgets = budgets.slice(0, 1);
   const trainPassBudgets = budgets.slice(0, 1);
+  const carPaymentBudgets = budgets.slice(0, 1);
 
   useEffect(() => {
     getBudgets()
@@ -78,11 +80,15 @@ function App() {
       date: "",
       currentBalance: 0,
       isOpen: false,
+      isBillsOpen: false,
+      isExtraBillsOpen: false,
       utilityBills: initialBills,
       groceryBudget: "",
       groceryItems: [],
       trainPassBudget: "",
       trainPassItems: [],
+      carPaymentBudget: [],
+      carPaymentItems: [],
       recurringBills: initialRecurringBill,
       additionalBills: initialAdditionalBills,
       BudgetModal: "",
@@ -103,6 +109,26 @@ function App() {
     handleSaveBudget(budgetId, {
       ...budget,
       isOpen: !budget.isOpen,
+    });
+  };
+
+  const handleToggleBillsOpen = (budgetId) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      isBillsOpen: !budget.isBillsOpen,
+    });
+  };
+
+  const handleToggleExtraSpendingOpen = (budgetId) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      isExtraBillsOpen: !budget.isExtraBillsOpen,
     });
   };
 
@@ -223,6 +249,42 @@ function App() {
     handleSaveBudget(budgetId, {
       ...budget,
       trainPassItems: (budget.trainPassItems || []).filter(
+        (item) => (item._id || item.id) !== itemId,
+      ),
+    });
+  };
+
+  /*Car Payment Section */
+  const handleCarPaymentBudgetChange = (budgetId, value) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      carPaymentBudget: value,
+    });
+  };
+
+  const handleAddCarPaymentItem = (budgetId, newItem) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      carPaymentItems: [
+        ...(budget.carPaymentItems || []),
+        { id: crypto.randomUUID(), ...newItem },
+      ],
+    });
+  };
+
+  const handleDeleteCarPaymentItem = (budgetId, itemId) => {
+    const budget = budgets.find((budget) => budget._id === budgetId);
+    if (!budget) return;
+
+    handleSaveBudget(budgetId, {
+      ...budget,
+      carPaymentItems: (budget.carPaymentItems || []).filter(
         (item) => (item._id || item.id) !== itemId,
       ),
     });
@@ -374,6 +436,11 @@ function App() {
       0,
     );
 
+    const totalCarPaymentSpent = (budget.carPaymentItems || []).reduce(
+      (total, item) => total + Number(item.price || 0),
+      0,
+    );
+
     const totalExpenses = totalUtilityBills + totalSubscriptions;
     const salaryBalance = Number(budget.salary || 0) - totalExpenses;
     const finalBalance = salaryBalance - totalAdditionalBills;
@@ -410,7 +477,11 @@ function App() {
       <MainCards
         key={budget._id}
         budget={budget}
+        budgets={budgets}
+        handleSaveBudget={handleSaveBudget}
         onToggleBudgetOpen={handleToggleBudgetOpen}
+        handleToggleBillsOpen={handleToggleBillsOpen}
+        handleToggleExtraSpendingOpen={handleToggleExtraSpendingOpen}
         onDateChange={handleDateChange}
         onAddExpenseToBudget={handleAddExpenseToBudget}
         onDeleteBudgetCard={handleDeleteBudgetCard}
@@ -435,6 +506,7 @@ function App() {
         onOpenDeleteModal={() => handleOpenDeleteModal(budget)}
         totalGrocerySpent={totalGrocerySpent}
         totalTrainPassSpent={totalTrainPassSpent}
+        totalCarPaymentSpent={totalCarPaymentSpent}
         projectedBankBalance={projectedBankBalance}
       />
     );
@@ -477,6 +549,27 @@ function App() {
         onTrainPassBudgetChange={handleTrainPassBudgetChange}
         onAddTrainPassItem={handleAddTrainPassItem}
         onDeleteTrainPassItem={handleDeleteTrainPassItem}
+        formatMoney={formatMoney}
+      />
+    );
+  };
+
+  const renderCarPayment = (budget) => {
+    const totalCarPaymentSpent = (budget.carPaymentItems || []).reduce(
+      (total, item) => total + Number(item.price || 0),
+      0,
+    );
+
+    return (
+      <CarPaymentSection
+        key={budget._id}
+        budgetId={budget._id}
+        carPaymentBudget={budget.carPaymentBudget}
+        carPaymentItems={budget.carPaymentItems || []}
+        totalCarPaymentSpent={totalCarPaymentSpent}
+        onCarPaymentBudgetChange={handleCarPaymentBudgetChange}
+        onAddCarPaymentItem={handleAddCarPaymentItem}
+        onDeleteCarPaymentItem={handleDeleteCarPaymentItem}
         formatMoney={formatMoney}
       />
     );
@@ -552,7 +645,10 @@ function App() {
             path="/trainpass"
             element={<>{trainPassBudgets.map(renderTrainPassPage)}</>}
           />
-          <Route path="/carpaymentpage" element={<></>} />
+          <Route
+            path="/carpaymentpage"
+            element={<>{carPaymentBudgets.map(renderCarPayment)}</>}
+          />
           <Route
             path="/history"
             element={<>{historyBudgets.map(renderBudgetCard)}</>}

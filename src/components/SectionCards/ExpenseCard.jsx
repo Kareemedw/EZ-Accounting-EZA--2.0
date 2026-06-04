@@ -19,12 +19,16 @@ function ExpenseCard({
   totalExpenses,
   totalGrocerySpent,
   totalTrainPassSpent,
+  totalCarPaymentSpent,
+  onDeleteCarPaymentItem,
+  onToggleBillsOpen,
   formatMoney,
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  //const [isBillsOpen, setIsBillsOpen] = useState(false);
+  const isOpen = budget.isBillsOpen || false;
 
   const handleToggleBillsCard = () => {
-    setIsOpen(!isOpen);
+    onToggleBillsOpen(budget._id);
   };
 
   const [expenses, setExpenses] = useState({
@@ -85,6 +89,8 @@ function ExpenseCard({
                   onDeleteExpense={onDeleteExpense}
                   onUpdateExpensePrice={onUpdateExpensePrice}
                   onToggleExpensePaid={onToggleExpensePaid}
+                  totalCarPaymentSpent={totalCarPaymentSpent}
+                  formatMoney={formatMoney}
                 />
                 <TotalExpenseCard
                   totalUtilityBills={totalUtilityBills}

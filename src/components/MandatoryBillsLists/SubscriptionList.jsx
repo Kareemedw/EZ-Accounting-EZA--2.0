@@ -11,6 +11,8 @@ function SubscriptionList({
   onToggleExpensePaid,
   onDeleteExpense,
   onUpdateExpensePrice,
+  totalCarPaymentSpent,
+  formatMoney,
 }) {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -61,64 +63,97 @@ function SubscriptionList({
         </form>
       </div>
       <ul className="recurring__list">
-        {expenses.map((recurring) => (
-          <li className="recurringBills" key={recurring._id || recurring.id}>
-            <form className="card__form_utitlity_bill" id="utility-bill">
-              <input
-                type="checkbox"
-                className="checkbox__input"
-                checked={recurring.paid || false}
-                onChange={() =>
-                  onToggleExpensePaid(
-                    budgetId,
-                    listName,
-                    recurring._id || recurring.id,
-                  )
-                }
-              />
-              <label
-                htmlFor="subscription_input"
-                className="card__label card__label_utility_bill subscription-input recurringBill"
-                id="recurringBill"
-              >
-                {recurring.name}
-              </label>
-              <input
-                id="subscription_input"
-                type="number"
-                className="card__input card__input_utility_bill subscription-input"
-                placeholder="Your recurring expenses"
-                value={recurring.price ?? ""}
-                onChange={(e) =>
-                  onUpdateExpensePrice(
-                    budgetId,
-                    listName,
-                    recurring._id || recurring.id,
-                    e.target.value,
-                  )
-                }
-              />
-              <button
-                type="button"
-                className="bill__delete-btn"
-                aria-label="Delete"
-                onClick={() =>
-                  onDeleteExpense(
-                    budgetId,
-                    listName,
-                    recurring._id || recurring.id,
-                  )
-                }
-              >
-                <img
-                  src={deleteIcon}
-                  alt="Delete Icon"
-                  className="bill__delete-icon"
+        {expenses.map((recurring) => {
+          const isCarPayment = recurring.name === "Car Payment";
+          const isSpecialExpense = isCarPayment;
+          const spentValue = isCarPayment ? totalCarPaymentSpent : 0;
+
+          return (
+            <li className="recurringBills" key={recurring._id || recurring.id}>
+              <form className="card__form_utitlity_bill" id="utility-bill">
+                <input
+                  type="checkbox"
+                  className="checkbox__input"
+                  checked={recurring.paid || false}
+                  onChange={() =>
+                    onToggleExpensePaid(
+                      budgetId,
+                      listName,
+                      recurring._id || recurring.id,
+                    )
+                  }
                 />
-              </button>
-            </form>
-          </li>
-        ))}
+                <label
+                  htmlFor="subscription_input"
+                  className="card__label card__label_utility_bill subscription-input recurringBill"
+                  id="recurringBill"
+                >
+                  {recurring.name}
+                </label>
+                {isSpecialExpense ? (
+                  <div className="special__inputs">
+                    <input
+                      type="number"
+                      step="0.01"
+                      className="card__input special__budget-input"
+                      placeholder={isCarPayment ? "Car Payment" : "Budget"}
+                      value={recurring.price ?? ""}
+                      onChange={(e) =>
+                        onUpdateExpensePrice(
+                          budgetId,
+                          listName,
+                          recurring._id || recurring.id,
+                          e.target.value,
+                        )
+                      }
+                    />
+
+                    <input
+                      type="text"
+                      className="card__input  specail__spent-input"
+                      placeholder={isCarPayment ? "Car Payment" : "Budget"}
+                      value={formatMoney(spentValue)}
+                      readOnly
+                    />
+                  </div>
+                ) : (
+                  <input
+                    id="subscription_input"
+                    type="number"
+                    className="card__input card__input_utility_bill subscription-input"
+                    value={recurring.price ?? ""}
+                    onChange={(e) =>
+                      onUpdateExpensePrice(
+                        budgetId,
+                        listName,
+                        recurring._id || recurring.id,
+                        e.target.value,
+                      )
+                    }
+                  />
+                )}
+                <button
+                  type="button"
+                  className={`bill__delete-btn ${isCarPayment ? "carPayment__delete-btn" : ""}`}
+                  aria-label="Delete"
+                  onClick={() =>
+                    onDeleteExpense(
+                      budgetId,
+                      listName,
+                      recurring._id || recurring.id,
+                    )
+                  }
+                >
+                  <img
+                    src={deleteIcon}
+                    alt="Delete Icon"
+                    className="bill__delete-icon"
+                  />
+                </button>
+              </form>
+            </li>
+          );
+        })}
       </ul>
     </ul>
   );

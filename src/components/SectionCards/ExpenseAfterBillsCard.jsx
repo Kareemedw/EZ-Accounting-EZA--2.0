@@ -12,12 +12,14 @@ function ExpenseAfterBillsCard({
   onAddExpenseToBudget,
   onToggleExpensePaid,
   totalAdditionalBills,
+  onToggleExtraBillsOpen,
   formatMoney,
 }) {
-  const [isOpen, setIsOpen] = useState(false);
+  //  const [isExtraBillsOpen, setIsExtraBillsOpen] = useState(false);
+  const isOpen = budget.isExtraBillsOpen || false;
 
   const handleToggleAdditionalBillsCard = () => {
-    setIsOpen(!isOpen);
+    onToggleExtraBillsOpen(budget._id);
   };
 
   return (

@@ -15,6 +15,7 @@ import {
 function MainCards({
   expenses,
   budget,
+  budgets,
   onToggleBudgetOpen,
   onOpenBudgetModal,
   onOpenDeleteModal,
@@ -23,6 +24,7 @@ function MainCards({
   onAddExpenseToBudget,
   handleAddExpenseToBudget,
   onDeleteBudgetCard,
+  handleSaveBudget,
   handleDeleteExpense,
   onUpdateExpensePrice,
   onSalaryChange,
@@ -37,6 +39,9 @@ function MainCards({
   totalAdditionalBills,
   totalGrocerySpent,
   totalTrainPassSpent,
+  totalCarPaymentSpent,
+  handleToggleBillsOpen,
+  handleToggleExtraSpendingOpen,
   finalBalance,
   formatMoney,
 }) {
@@ -133,6 +138,8 @@ function MainCards({
                 totalExpenses={totalExpenses}
                 totalGrocerySpent={totalGrocerySpent}
                 totalTrainPassSpent={totalTrainPassSpent}
+                totalCarPaymentSpent={totalCarPaymentSpent}
+                onToggleBillsOpen={handleToggleBillsOpen}
                 formatMoney={formatMoney}
               />
               <ExpenseAfterBillsCard
@@ -150,6 +157,7 @@ function MainCards({
                 totalAdditionalBills={totalAdditionalBills}
                 formatMoney={formatMoney}
                 finalBalance={finalBalance}
+                onToggleExtraBillsOpen={handleToggleExtraSpendingOpen}
               />
               <SalaryBalanceCard
                 salary={budget.salary}

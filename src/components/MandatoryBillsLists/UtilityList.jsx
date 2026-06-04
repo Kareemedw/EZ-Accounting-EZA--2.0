@@ -69,9 +69,14 @@ function UtilityList({
       </div>
       <ul className="utility__list">
         {expenses.map((bill) => {
-          const isGrocery = bill.name === "Grocery";
-          const isTrainPass = bill.name === "Train pass";
+          const isGrocery = bill.name?.toLowerCase() === "grocery";
+          const isTrainPass = bill.name?.toLowerCase() === "train pass";
           const isSpecialExpense = isGrocery || isTrainPass;
+          const spentValue = isGrocery
+            ? formatMoney(totalGrocerySpent)
+            : isTrainPass
+              ? formatMoney(totalTrainPassSpent)
+              : "";
 
           return (
             <li
@@ -132,11 +137,7 @@ function UtilityList({
                             ? "Train Pass spent"
                             : "Spent"
                       }
-                      value={
-                        isGrocery
-                          ? formatMoney(totalGrocerySpent)
-                          : formatMoney(totalTrainPassSpent)
-                      }
+                      value={spentValue}
                       readOnly
                     />
                   </div>
@@ -159,7 +160,7 @@ function UtilityList({
                 )}
                 <button
                   type="button"
-                  className={`bill__delete-btn ${isGrocery ? "grocery__delete-btn" : ""}`}
+                  className={`bill__delete-btn ${isGrocery ? "grocery__delete-btn" : isTrainPass ? "train__delete-btn" : ""}`}
                   aria-label="Delete"
                   onClick={() =>
                     onDeleteExpense(budgetId, listName, bill._id || bill.id)
