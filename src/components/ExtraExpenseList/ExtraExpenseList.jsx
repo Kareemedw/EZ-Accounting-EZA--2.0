@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { initialAdditionalBills } from "../../utils/Constants";
 import deleteIcon from "../../assets/delete-icon.svg";
+import penIcon from "../../assets/penIcon.svg";
 import "./ExtraExpenseList.css";
 
 function ExtraExpenseList({
@@ -92,7 +93,11 @@ function ExtraExpenseList({
                   htmlFor="balance-input"
                   className="card__label card__label_utility_bill balanceBills"
                 >
-                  {extraBill.name}
+                  <button className="extraBill__title-edit">
+                    {extraBill.name}
+
+                    <img src={penIcon} />
+                  </button>
                 </label>
                 <input
                   id="balance-input1"

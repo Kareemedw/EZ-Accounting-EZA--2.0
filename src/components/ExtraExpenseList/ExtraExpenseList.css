@@ -53,6 +53,15 @@
   color: #6b7280;
 }
 
+.extraBill__title-edit {
+  display: flex;
+  gap: 12px;
+  background: transparent;
+  border-style: none;
+  align-items: baseline;
+  cursor: pointer;
+}
+
 .additionalExpense__list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

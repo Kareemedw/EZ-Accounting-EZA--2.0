@@ -53,6 +53,15 @@
   color: #6b7280;
 }
 
+.bill__title-edit {
+  display: flex;
+  gap: 12px;
+  background: transparent;
+  border-style: none;
+  align-items: center;
+  cursor: pointer;
+}
+
 /* Utility styles*/
 .utility__list {
   display: grid;

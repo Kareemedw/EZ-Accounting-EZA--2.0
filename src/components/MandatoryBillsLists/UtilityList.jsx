@@ -1,5 +1,6 @@
 import { initialBills } from "../../utils/Constants";
 import deleteIcon from "../../assets/delete-icon.svg";
+import penIcon from "../../assets/penIcon.svg";
 import "./MandatoryBillsLists.css";
 import { useState } from "react";
 
@@ -101,7 +102,11 @@ function UtilityList({
                   className="card__label card__label_utility_bill utilityBill"
                   data-role="utility-bill1"
                 >
-                  {bill.name}
+                  <button className="bill__title-edit">
+                    {bill.name}
+
+                    <img src={penIcon} />
+                  </button>
                 </label>
                 {isSpecialExpense ? (
                   <div className="special__inputs">

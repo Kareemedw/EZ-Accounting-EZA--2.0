@@ -1,5 +1,6 @@
 import { initialRecurringBill } from "../../utils/Constants";
 import deleteIcon from "../../assets/delete-icon.svg";
+import penIcon from "../../assets/penIcon.svg";
 import "./MandatoryBillsLists.css";
 import { useState } from "react";
 
@@ -88,7 +89,11 @@ function SubscriptionList({
                   className="card__label card__label_utility_bill subscription-input recurringBill"
                   id="recurringBill"
                 >
-                  {recurring.name}
+                  <button className="bill__title-edit">
+                    {recurring.name}
+
+                    <img src={penIcon} />
+                  </button>
                 </label>
                 {isSpecialExpense ? (
                   <div className="special__inputs">

@@ -44,9 +44,11 @@ function App() {
         ? "Salary Section"
         : location.pathname === "/groceries"
           ? "Grocery Section"
-          : location.pathname === "/carpaymentsection"
-            ? "Car Payment Section"
-            : "My Budgets";
+          : location.pathname === "/trainpass"
+            ? "Train Payment Section"
+            : location.pathname === "/carpaymentpage"
+              ? "Car Payment Section"
+              : "My Budgets";
 
   const handleBudgetClick = (budget) => {
     setSelectedBudget(budget);

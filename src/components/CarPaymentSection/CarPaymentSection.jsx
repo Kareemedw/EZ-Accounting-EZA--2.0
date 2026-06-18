@@ -43,7 +43,7 @@ function CarPaymentSection({
         </label>
 
         <label className="card__label card__label_utility_bill">
-          Grocery Spent This Month
+          Car Payment Spent This Month
           <input
             type="text"
             className="card__input  card__input_utility_bill"
