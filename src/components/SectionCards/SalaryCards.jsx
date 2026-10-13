@@ -3,7 +3,7 @@ import penIcon from "../../assets/penIcon.svg";
 
 function SalaryCard({
   salary,
-  date,
+  budget,
   currentBalance,
   currentBalanceAfterPaid,
   onDateChange,
@@ -23,14 +23,32 @@ function SalaryCard({
               htmlFor="date-input-1"
               className="card__label card__label_date"
             >
-              Date
+              Pay Period Start
               <input
                 id="date-input-1"
                 type="date"
-                className="card__input"
+                className="card__input card__input_date"
                 placeholder="Month & Year"
-                value={date || ""}
-                onChange={(e) => onDateChange(budgetId, e.target.value)}
+                value={budget.startDate?.slice(0, 10) || ""}
+                onChange={(e) =>
+                  onDateChange(budgetId, "startDate", e.target.value)
+                }
+              />
+            </label>
+            <label
+              htmlFor="date-input-2"
+              className="card__label card__label_date"
+            >
+              Pay Period End
+              <input
+                id="date-input-2"
+                type="date"
+                className="card__input card__input_date"
+                placeholder="Month & Year"
+                value={budget.endDate?.slice(0, 10) || ""}
+                onChange={(e) =>
+                  onDateChange(budgetId, "endDate", e.target.value)
+                }
               />
             </label>
           </form>
@@ -68,7 +86,7 @@ function SalaryCard({
                 htmlFor="previous__balance-input"
                 className="card__label-balance"
               >
-                Projected Bank Balance
+                Starting Bank Balance
                 <input
                   id="previous__balance-inputs"
                   type="number"

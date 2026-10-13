@@ -23,6 +23,7 @@ import BudgetModal from "../cardModal/budgetCardModal";
 import BillModal from "../cardModal/billCardModal";
 import ExtraBillModal from "../cardModal/extraBillModalCard";
 import DeleteModal from "../deleteModal/deleteModal";
+import UpComing from "../UpComing/UpComing";
 
 function App() {
   /* Modals */
@@ -38,17 +39,19 @@ function App() {
   const location = useLocation();
 
   const pageTitle =
-    location.pathname === "/history"
-      ? "Budget History"
-      : location.pathname === "/salarysection"
-        ? "Salary Section"
-        : location.pathname === "/groceries"
-          ? "Grocery Section"
-          : location.pathname === "/trainpass"
-            ? "Train Payment Section"
-            : location.pathname === "/carpaymentpage"
-              ? "Car Payment Section"
-              : "My Budgets";
+    location.pathname === "/upComingBudgets"
+      ? "Upcoming Budgets"
+      : location.pathname === "/history"
+        ? "Budget History"
+        : location.pathname === "/salarysection"
+          ? "Salary Section"
+          : location.pathname === "/groceries"
+            ? "Grocery Section"
+            : location.pathname === "/trainpass"
+              ? "Train Payment Section"
+              : location.pathname === "/carpaymentpage"
+                ? "Car Payment Section"
+                : "My Budgets";
 
   const handleBudgetClick = (budget) => {
     setSelectedBudget(budget);
@@ -61,11 +64,49 @@ function App() {
   /* Budgets*/
   const [budgets, setBudgets] = useState([]);
 
-  const mainBudgets = budgets.slice(0, 3);
-  const historyBudgets = budgets.slice(3);
-  const groceryBudgets = budgets.slice(0, 1);
-  const trainPassBudgets = budgets.slice(0, 1);
-  const carPaymentBudgets = budgets.slice(0, 1);
+  const getDateOnly = (date) => {
+    const result = new Date(date);
+    result.setHours(0, 0, 0, 0);
+    return result;
+  };
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const draftBudgets = budgets.filter(
+    (budget) => !budget.startDate || !budget.endDate,
+  );
+
+  const mainBudgets = budgets.find((budget) => {
+    if (!budget.startDate || !budget.endDate) {
+      return false;
+    }
+
+    const startDate = getDateOnly(budget.startDate);
+    const endDate = getDateOnly(budget.endDate);
+
+    return startDate <= today && endDate >= today;
+  });
+
+  const upComingBudgets = budgets.filter((budget) => {
+    if (!budget.startDate) {
+      return false;
+    }
+
+    const startDate = getDateOnly(budget.startDate);
+
+    return startDate > today;
+  });
+
+  const historyBudgets = budgets.filter((budget) => {
+    if (!budget.endDate) {
+      return false;
+    }
+
+    const endDate = getDateOnly(budget.endDate);
+
+    return endDate < today;
+  });
 
   useEffect(() => {
     getBudgets()
@@ -79,7 +120,8 @@ function App() {
     createBudget({
       name: "New Budget",
       salary: 0,
-      date: "",
+      startDate: "",
+      endDate: "",
       currentBalance: 0,
       isOpen: false,
       isBillsOpen: false,
@@ -134,7 +176,7 @@ function App() {
     });
   };
 
-  const handleDateChange = (budgetId, newDate) => {
+  const handleDateChange = (budgetId, dateField, newDate) => {
     const budget = budgets.find((budget) => budget._id === budgetId);
 
     if (!budget) {
@@ -144,7 +186,7 @@ function App() {
 
     const updatedBudget = {
       ...budget,
-      date: newDate,
+      [dateField]: newDate,
     };
 
     handleSaveBudget(budgetId, updatedBudget);
@@ -476,41 +518,43 @@ function App() {
       paidRecurringTotal -
       paidAdditionalTotal;
     return (
-      <MainCards
-        key={budget._id}
-        budget={budget}
-        budgets={budgets}
-        handleSaveBudget={handleSaveBudget}
-        onToggleBudgetOpen={handleToggleBudgetOpen}
-        handleToggleBillsOpen={handleToggleBillsOpen}
-        handleToggleExtraSpendingOpen={handleToggleExtraSpendingOpen}
-        onDateChange={handleDateChange}
-        onAddExpenseToBudget={handleAddExpenseToBudget}
-        onDeleteBudgetCard={handleDeleteBudgetCard}
-        onSalaryChange={handleSalaryChange}
-        onUpdateExpensePrice={handleUpdateExpensePrice}
-        handleAddExpenseToBudget={handleAddExpenseToBudget}
-        handleDeleteExpense={handleDeleteExpense}
-        onCurrentBalanceChange={handleCurrentBalanceChange}
-        onToggleExpensePaid={handleToggleExpensePaid}
-        currentBalanceAfterPaid={currentBalanceAfterPaid}
-        totalUtilityBills={totalUtilityBills}
-        totalSubscriptions={totalSubscriptions}
-        totalExpenses={totalExpenses}
-        salaryBalance={salaryBalance}
-        totalAdditionalBills={totalAdditionalBills}
-        finalBalance={finalBalance}
-        formatMoney={formatMoney}
-        onOpenBudgetModal={() => handleBudgetClick(budget)}
-        onOpenBillModal={() => setActiveModal("bills")}
-        onOpenExtraBillModal={() => setActiveModal("Extra Spending")}
-        onDeleteModal={() => setActiveModal("delete")}
-        onOpenDeleteModal={() => handleOpenDeleteModal(budget)}
-        totalGrocerySpent={totalGrocerySpent}
-        totalTrainPassSpent={totalTrainPassSpent}
-        totalCarPaymentSpent={totalCarPaymentSpent}
-        projectedBankBalance={projectedBankBalance}
-      />
+      <>
+        <MainCards
+          key={budget._id}
+          budget={budget}
+          budgets={budgets}
+          handleSaveBudget={handleSaveBudget}
+          onToggleBudgetOpen={handleToggleBudgetOpen}
+          handleToggleBillsOpen={handleToggleBillsOpen}
+          handleToggleExtraSpendingOpen={handleToggleExtraSpendingOpen}
+          onDateChange={handleDateChange}
+          onAddExpenseToBudget={handleAddExpenseToBudget}
+          onDeleteBudgetCard={handleDeleteBudgetCard}
+          onSalaryChange={handleSalaryChange}
+          onUpdateExpensePrice={handleUpdateExpensePrice}
+          handleAddExpenseToBudget={handleAddExpenseToBudget}
+          handleDeleteExpense={handleDeleteExpense}
+          onCurrentBalanceChange={handleCurrentBalanceChange}
+          onToggleExpensePaid={handleToggleExpensePaid}
+          currentBalanceAfterPaid={currentBalanceAfterPaid}
+          totalUtilityBills={totalUtilityBills}
+          totalSubscriptions={totalSubscriptions}
+          totalExpenses={totalExpenses}
+          salaryBalance={salaryBalance}
+          totalAdditionalBills={totalAdditionalBills}
+          finalBalance={finalBalance}
+          formatMoney={formatMoney}
+          onOpenBudgetModal={() => handleBudgetClick(budget)}
+          onOpenBillModal={() => setActiveModal("bills")}
+          onOpenExtraBillModal={() => setActiveModal("Extra Spending")}
+          onDeleteModal={() => setActiveModal("delete")}
+          onOpenDeleteModal={() => handleOpenDeleteModal(budget)}
+          totalGrocerySpent={totalGrocerySpent}
+          totalTrainPassSpent={totalTrainPassSpent}
+          totalCarPaymentSpent={totalCarPaymentSpent}
+          projectedBankBalance={projectedBankBalance}
+        />
+      </>
     );
   };
 
@@ -595,6 +639,14 @@ function App() {
             className={({ isActive }) =>
               isActive ? "nav__link nav__link_active" : "nav__link"
             }
+            to="/upComingBudgets"
+          >
+            Upcoming Budgets
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive ? "nav__link nav__link_active" : "nav__link"
+            }
             to="/groceries"
           >
             Grocery Section
@@ -632,7 +684,14 @@ function App() {
             path="/"
             element={
               <>
-                {mainBudgets.map(renderBudgetCard)}
+                {mainBudgets ? (
+                  renderBudgetCard(mainBudgets)
+                ) : (
+                  <p>No active budget for the current pay period.</p>
+                )}
+
+                {draftBudgets.map(renderBudgetCard)}
+
                 <button className="add__budget-btn" onClick={handleAddBudget}>
                   + Add New Budget
                 </button>
@@ -641,19 +700,49 @@ function App() {
           />
           <Route
             path="/groceries"
-            element={<>{groceryBudgets.map(renderGroceryPage)}</>}
+            element={
+              <>
+                {mainBudgets ? (
+                  renderGroceryPage(mainBudgets)
+                ) : (
+                  <p> No active budget.</p>
+                )}
+              </>
+            }
           />
-          <Route
-            path="/trainpass"
-            element={<>{trainPassBudgets.map(renderTrainPassPage)}</>}
-          />
+          {
+            <Route
+              path="/trainpass"
+              element={
+                <>
+                  {mainBudgets ? (
+                    renderTrainPassPage(mainBudgets)
+                  ) : (
+                    <p> No active budget.</p>
+                  )}
+                </>
+              }
+            />
+          }
           <Route
             path="/carpaymentpage"
-            element={<>{carPaymentBudgets.map(renderCarPayment)}</>}
+            element={
+              <>
+                {mainBudgets ? (
+                  renderCarPayment(mainBudgets)
+                ) : (
+                  <p> No active budget.</p>
+                )}
+              </>
+            }
           />
           <Route
             path="/history"
             element={<>{historyBudgets.map(renderBudgetCard)}</>}
+          />
+          <Route
+            path="/upComingBudgets"
+            element={<>{upComingBudgets.map(renderBudgetCard)}</>}
           />
         </Routes>
       </div>

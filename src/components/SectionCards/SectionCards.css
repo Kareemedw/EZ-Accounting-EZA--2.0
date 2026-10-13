@@ -52,6 +52,12 @@
   align-items: center;
 }
 
+.card__form_date {
+  flex-direction: column;
+  align-items: baseline;
+  gap: 8px;
+}
+
 .card__form_utitlity_bill {
   display: flex;
   flex-direction: column;
@@ -108,6 +114,11 @@
   color: #212121;
   padding: 10px;
   opacity: 40%;
+}
+
+.card__input_date {
+  max-width: 500px;
+  width: 60%;
 }
 
 .checkbox__input {

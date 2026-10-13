@@ -51,6 +51,14 @@ function MainCards({
     onToggleBudgetOpen(budget._id);
   };
 
+  const today = new Date();
+
+  const currentBudgets = budgets.filter((budget) => {
+    const startDate = new Date(`${budget.startDate}T00:00:00`);
+
+    return startDate <= today;
+  });
+
   return (
     <div className="content">
       <section className="budgets page__section" id="overall-budget-body">
@@ -106,7 +114,7 @@ function MainCards({
             <div className="budget__card-body" id="budget-body">
               <SalaryCard
                 budgetId={budget._id}
-                date={budget.date}
+                budget={budget}
                 onDateChange={onDateChange}
                 salary={budget.salary}
                 onSalaryChange={onSalaryChange}
