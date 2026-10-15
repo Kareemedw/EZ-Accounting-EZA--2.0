@@ -1,5 +1,5 @@
 const baseUrl = import.meta.env.PROD
-  ? "https://eza.edsintech.com"
+  ? "https://api.eza.edsintech.com"
   : "http://localhost:4001";
 
 const checkResponse = (res) => {
