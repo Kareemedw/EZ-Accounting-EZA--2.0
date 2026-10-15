@@ -1,4 +1,6 @@
-const baseUrl = "http://localhost:4001";
+const baseUrl = import.meta.env.PROD
+  ? "https://eza.edsintech.com"
+  : "http://localhost:4001";
 
 const checkResponse = (res) => {
   return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
