@@ -9,7 +9,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "deploy": "npm run build && scp -r ./dist/* kareemjedwards54@eza.edsintech.com:/home/kareemjedwards54/eza_frontend"
+    "deploy": "npm run build && scp -r ./dist/* kareemjedwards54@eza.edsintech.com:/home/kareemjedwards54/eza_frontend/ && ssh kareemjedwards54@eza.edsintech.com 'sudo cp -a /home/kareemjedwards54/eza_frontend/. /var/www/eza_frontend/'"
   },
   "dependencies": {
     "react": "^18.3.1",
