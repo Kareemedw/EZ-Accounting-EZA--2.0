@@ -503,7 +503,27 @@ function App() {
       0,
     );
 
-    const previousBudget = mainBudgets[index + 1];
+    const getPreviousBudget = (currentBudget) => {
+      if (!currentBudget?.startDate) return null;
+
+      const currentStart = new Date(currentBudget.startDate);
+
+      return (
+        budgets
+          .filter((budget) => {
+            if (!budget || budget._id === currentBudget._id) {
+              return false;
+            }
+
+            if (!budget.endDate) return false;
+
+            return new Date(budget.endDate) < currentStart;
+          })
+          .sort((a, b) => new Date(b.endDate) - new Date(a.endDate))[0] || null
+      );
+    };
+
+    const previousBudget = getPreviousBudget(budget);
 
     const previousProjectedActualBalance = previousBudget
       ? Number(previousBudget.currentBalanceAfterPaid || 0)
@@ -552,7 +572,7 @@ function App() {
           totalGrocerySpent={totalGrocerySpent}
           totalTrainPassSpent={totalTrainPassSpent}
           totalCarPaymentSpent={totalCarPaymentSpent}
-          projectedBankBalance={projectedBankBalance}
+          //projectedBankBalance={projectedBankBalance}
         />
       </>
     );
