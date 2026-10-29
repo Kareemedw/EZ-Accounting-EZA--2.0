@@ -32,7 +32,7 @@ function SubscriptionList({
 
   return (
     <ul className="card__lists">
-      <h3 className="">Recurring Subscription</h3>
+      <h3 className="card__title">Recurring Subscription</h3>
       <div className="card__add">
         <form className="card__form" onSubmit={handleSubmit} id="utility-bill">
           <fieldset className="form__fieldset">
@@ -74,7 +74,7 @@ function SubscriptionList({
               <form className="card__form_utitlity_bill" id="utility-bill">
                 <input
                   type="checkbox"
-                  className="checkbox__input"
+                  className={`checkbox__input ${isCarPayment ? "carPayment__checkbox-input" : ""}`}
                   checked={recurring.paid || false}
                   onChange={() =>
                     onToggleExpensePaid(

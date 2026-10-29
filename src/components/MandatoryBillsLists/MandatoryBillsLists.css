@@ -65,24 +65,24 @@
 /* Utility styles*/
 .utility__list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  column-gap: 100px;
-  row-gap: 1px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 300px;
+  align-items: center;
+  gap: 0 100px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
 /* Recurring styles*/
 
 .recurring__list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  column-gap: 100px;
-  row-gap: 1px;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 300px;
+  align-items: center;
+  gap: 0 100px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
 }
 
 .special__inputs input:first-child {

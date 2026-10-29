@@ -91,7 +91,7 @@ function UtilityList({
               >
                 <input
                   type="checkbox"
-                  className="checkbox__input"
+                  className={`checkbox__input checkbox__input ${isGrocery ? "grocery__checkbox-input" : isTrainPass ? "train__checkbox-input" : ""}`}
                   checked={bill.paid || false}
                   onChange={() =>
                     onToggleExpensePaid(budgetId, listName, bill._id || bill.id)

@@ -180,11 +180,23 @@
   top: 80px;
 }
 
+.grocery__checkbox-input {
+  top: 80px;
+}
+
 .train__delete-btn {
   top: 80px;
 }
 
+.train__checkbox-input {
+  top: 80px;
+}
+
 .carPayment__delete-btn {
+  top: 80px;
+}
+
+.carPayment__checkbox-input {
   top: 80px;
 }
 

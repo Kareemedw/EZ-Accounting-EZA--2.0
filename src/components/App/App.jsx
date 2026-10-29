@@ -24,6 +24,7 @@ import BillModal from "../cardModal/billCardModal";
 import ExtraBillModal from "../cardModal/extraBillModalCard";
 import DeleteModal from "../deleteModal/deleteModal";
 import UpComing from "../UpComing/UpComing";
+import Navbar from "./Navbar";
 
 function App() {
   /* Modals */
@@ -646,56 +647,7 @@ function App() {
       <div className="page__content">
         <Header />
 
-        <nav className="nav__container">
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "nav__link nav__link_active" : "nav__link"
-            }
-            to="/"
-          >
-            Home
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "nav__link nav__link_active" : "nav__link"
-            }
-            to="/upComingBudgets"
-          >
-            Upcoming Budgets
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "nav__link nav__link_active" : "nav__link"
-            }
-            to="/groceries"
-          >
-            Grocery Section
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "nav__link nav__link_active" : "nav__link"
-            }
-            to="/trainpass"
-          >
-            Train Pass Section
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "nav__link nav__link_active" : "nav__link"
-            }
-            to="/carpaymentpage"
-          >
-            Car Payment Page
-          </NavLink>
-          <NavLink
-            className={({ isActive }) =>
-              isActive ? "nav__link nav__link_active" : "nav__link"
-            }
-            to="/history"
-          >
-            History
-          </NavLink>
-        </nav>
+        <Navbar />
 
         <h2 className="page__title">{pageTitle}</h2>
 

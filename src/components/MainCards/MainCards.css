@@ -126,8 +126,38 @@
   background: transparent;
 }
 
-@media screen and (max-width: 630px) {
-  .content {
-    padding: 0 16px;
+/* Tablet */
+
+@media (max-width: 1024px) {
+  .budget__card-body {
+    gap: 16px;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 768px) {
+  .budget__card-body {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .budget__card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .budget__card-header_text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .budget__name {
+    overflow-wrap: anywhere;
+  }
+
+  .budget__card-title {
+    max-width: 100%;
   }
 }
