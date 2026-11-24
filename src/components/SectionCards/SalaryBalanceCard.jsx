@@ -44,7 +44,7 @@ function SalaryBalanceCard({
             <button className="operant__btn" type="button">
               =
             </button>
-            <label className="card__label" htmlFor="balance_input">
+            <label className="card__label " htmlFor="balance_input">
               Balance
               <input
                 id="balance_input"

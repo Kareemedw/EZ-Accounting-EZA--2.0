@@ -255,139 +255,413 @@
   margin: 0 auto;
 }
 
-@media screen and (max-width: 1075px) {
-  .card__form {
-    padding: 0 16px;
-    flex-direction: column;
+@media screen and (max-width: 950px) {
+  /* Two columns inside each bill */
+  .card__form_utitlity_bill {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr) 32px;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 12px 10px;
+
+    width: 100%;
+    min-width: 0;
+    padding: 14px;
+    box-sizing: border-box;
+
+    border: 1px solid #dedede;
+    border-radius: 12px;
   }
 
-  .operant__btn {
-    top: 5px;
+  .card__form_additional_expense {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr) 32px;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 12px 10px;
+
+    width: 100%;
+    min-width: 0;
+    padding: 14px;
+    box-sizing: border-box;
+
+    border: 1px solid #dedede;
+    border-radius: 12px;
   }
 
-  .bill__delete-btn {
-    left: 320px;
-  }
-
-  .card__label_tracking {
-    position: relative;
-    left: 290px;
-    margin-bottom: 20px;
-  }
-}
-
-@media screen and (max-width: 1006px) {
-  .card__label_tracking {
-    position: relative;
-    left: 250px;
-    margin-bottom: 20px;
-  }
-}
-
-@media screen and (max-width: 900px) {
-  .card__list {
-    margin: 0 auto;
-  }
-  .card__lists {
-    margin: 0 auto;
-  }
-  .card__list1 {
-    margin: 0 auto;
-  }
-
-  .card__label {
-    width: 50%;
-  }
-
-  .card__utility_bill {
-    flex-direction: column;
-    gap: 50px;
-  }
-
-  .operant__btn {
-    top: 5px;
-  }
-
-  .bill__delete-btn {
-    left: 318px;
-  }
-
-  .card__title_balance {
+  /* Checkbox: first row, first column */
+  .card__form_utitlity_bill > .checkbox__input {
+    grid-column: 1;
+    grid-row: 1;
     margin: 0;
+    top: 20px;
+    left: 35px;
+    width: 15px;
+    height: 15px;
+  }
+
+  /* Bill name and edit icon */
+  .card__form_utitlity_bill > .card__label_utility_bill {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .bill__title-edit {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
-  .card__title_additional {
+  /* Delete button */
+  .card__form_utitlity_bill > .bill__delete-btn {
+    grid-row: 1;
+    justify-self: end;
+    right: 5px;
+    top: 1px;
+  }
+
+  /* Regular bill amount: second row */
+  .card__form_utitlity_bill > .card__input_utility_bill {
+    grid-row: 2;
+    width: 120px;
+    min-width: 0;
+    box-sizing: border-box;
+    border: none;
+    justify-items: center;
+    margin-left: 0;
+    padding-left: 0;
+  }
+
+  /* Grocery / Train Pass inputs */
+  .card__form_utitlity_bill > .special__inputs {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    min-width: 0;
+    justify-items: center;
+  }
+
+  .special__inputs .card__input {
+    width: 50%;
+    min-width: 0;
+    box-sizing: border-box;
+    border: none;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 950px) {
+  /* Main budget card */
+  .card {
+    width: 100%;
+    padding: 24px;
+  }
+
+  /* Additional bills header */
+  .additionalBills__card-header {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .additionalBills__card-title {
+    min-width: 0;
+    flex-wrap: wrap;
     margin-bottom: 0;
+    align-items: center;
   }
-  .card__label_tracking {
-    position: relative;
-    left: 170px;
-    margin-bottom: 20px;
-  }
-}
 
-@media screen and (max-width: 852px) {
-  .card__label_tracking {
-    position: relative;
-    left: 150px;
-    margin-bottom: 20px;
+  .additionalBills__card-chev {
+    margin: 0;
+    flex-shrink: 0;
   }
-}
 
-@media screen and (max-width: 668px) {
-  .card__label_tracking {
-    position: relative;
-    left: 115px;
-    margin-bottom: 20px;
+  /* All bill lists */
+  .utility__list,
+  .recurring__list,
+  .additionalExpense__list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
   }
-}
 
-@media screen and (max-width: 630px) {
-  .card__label {
+  /* Individual bill containers */
+  .utilityBills,
+  .recurringBills,
+  .balanceBills {
+    width: 100%;
+    min-width: 0;
+    list-style: none;
+    box-sizing: border-box;
+  }
+
+  /* Individual bill cards */
+  .card__form_utitlity_bill,
+  .card__form_additional_expense {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr) 36px;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 12px;
+
+    width: 100%;
+    min-width: 0;
+    padding: 14px;
+    box-sizing: border-box;
+
+    border: 1px solid #dedede;
+    border-radius: 12px;
+  }
+
+  /* Reset absolute positioning */
+  .card__form_utitlity_bill > .checkbox__input,
+  .card__form_additional_expense > .checkbox__input {
+    position: static;
+    grid-column: 1;
+    grid-row: 1;
+    width: 18px;
+    height: 18px;
+    margin: 0;
+  }
+
+  /* Bill title */
+  .card__form_utitlity_bill > .card__label_utility_bill {
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    position: static;
+  }
+
+  .bill__title-edit,
+  .extraBill__title-edit {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 100%;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+  }
+
+  /* Delete buttons */
+  .card__form_utitlity_bill > .bill__delete-btn,
+  .card__form_additional_expense > .bill__delete-btn {
+    position: static;
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+    margin: 0;
+  }
+
+  .bill__delete-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Regular bill amount */
+  .card__form_utitlity_bill > .card__input_utility_bill,
+  .card__form_additional_expense > .card__input {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    padding: 10px 12px;
+    box-sizing: border-box;
+  }
+
+  /* Grocery and train pass inputs */
+  .card__form_utitlity_bill > .special__inputs {
+    grid-column: 1 / -1;
+    grid-row: 2;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .special__inputs .card__input {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  /* Balance tracking */
+  .balance__list {
+    position: static;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin: 8px 0 0;
+    padding: 0;
+  }
+
+  /* .card__balance_bill {
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+  } */
+
+  /* General labels */
+  .card__label,
+  .card__label-balance {
+    width: 100%;
+    max-width: 100%;
+    min-width: 10px 0 0;
+    margin: 0;
+  }
+
+  .card__form {
+    flex-direction: column;
+    align-items: baseline;
+    gap: 8px;
+  }
+
+  /* Date inputs */
+  .card__input_date {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Add buttons */
+  .add__btn {
+    width: 100%;
+    max-width: 270px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+  }
+
+  .card__list1 {
     width: 100%;
   }
 
-  .card__label_salary {
-    margin-top: 12px;
-  }
-
-  .card__label_date {
+  .operant__btn {
     margin: 0 auto;
   }
 
+  .total__expense-card {
+    width: 100%;
+  }
+}
+
+/* ==========================================
+   MOBILE PHONES
+   600px and below
+   ========================================== */
+
+@media screen and (max-width: 600px) {
+  .card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+
+  .additionalBills__card {
+    width: 100%;
+    margin-top: 12px;
+    border-radius: 12px;
+  }
+
+  .additionalBills__card-header {
+    padding: 12px;
+  }
+
+  .additionalBills__card-title {
+    gap: 6px;
+  }
+
+  .additionalBills__card-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .card__form_utitlity_bill,
+  .card__form_additional_expense {
+    grid-template-columns: 20px minmax(0, 1fr) 28px;
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .card__label_utility_bill {
+    font-size: 14px;
+  }
+
+  .bill__title-edit,
+  .extraBill__title-edit {
+    font-size: 14px;
+    gap: 6px;
+  }
+
   .card__input {
-    padding: 0;
-    max-width: 300px;
+    font-size: 14px;
+    opacity: 1;
   }
 
-  .card__input_utility_bill {
-    padding: 0;
-    max-width: 180px;
-    justify-content: center;
+  .bill__delete-icon {
+    width: 22px;
+    height: 22px;
   }
 
-  .operant__btn {
-    top: 5px;
-  }
-
-  .bill__delete-btn {
-    top: 45px;
-    left: 225px;
+  .special__inputs {
+    gap: 8px;
   }
 
   .card__balance_bill {
-    justify-content: center;
+    padding: 12px;
   }
 
-  .card__title_additional {
-    margin-bottom: 0;
+  .add__btn {
+    max-width: 100%;
+    height: 48px;
+    font-size: 14px;
+  }
+}
+
+/* ==========================================
+   EXTRA SMALL PHONES
+   380px and below
+   ========================================== */
+
+@media screen and (max-width: 380px) {
+  .card {
+    padding: 10px;
   }
 
-  .card__label_tracking {
-    position: relative;
-    left: 10px;
-    margin-bottom: 20px;
+  .card__form_utitlity_bill,
+  .card__form_additional_expense {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .special__inputs .card__input {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  .additionalBills__card-header {
+    padding: 10px;
   }
 }
