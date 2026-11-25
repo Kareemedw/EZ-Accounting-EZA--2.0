@@ -8,15 +8,18 @@ function Header({ finalBalance, formatMoney }) {
         <h1 className="header__title">EZA - Mobile Wallet</h1>
       </div>
       <div className="header__user-container">
-        <div>
+        <div className="header__information">
           <h3 className="header__username">Kareem Edwards</h3>
-          <input
-            type="text"
-            className="card__input-header"
-            placeholder="Balance"
-            value={formatMoney(finalBalance)}
-            readOnly
-          />
+          <label className="card__label">
+            <p className="card__label-title">Balance left from salary</p>
+            <input
+              type="text"
+              className="card__input-header"
+              placeholder="Balance"
+              value={formatMoney(finalBalance)}
+              readOnly
+            />
+          </label>
         </div>
         <img src={avatar} alt="Kareem Edwards" className="header__avatar" />
       </div>

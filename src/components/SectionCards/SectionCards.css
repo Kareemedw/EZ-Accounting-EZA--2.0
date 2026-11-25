@@ -255,6 +255,12 @@
   margin: 0 auto;
 }
 
+@media screen and (max-width: 1250px) {
+  .balance__list {
+    left: 700px;
+  }
+}
+
 @media screen and (max-width: 950px) {
   /* Two columns inside each bill */
   .card__form_utitlity_bill {
