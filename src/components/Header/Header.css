@@ -25,3 +25,15 @@
   gap: 20px;
   margin-right: 20px;
 }
+
+.card__input-header {
+  border: none;
+  background-color: transparent;
+}
+
+@media screen and (max-width: 600px) {
+  .header {
+    font-size: 7px;
+    align-items: center;
+  }
+}

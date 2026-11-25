@@ -455,6 +455,44 @@ function App() {
     return `$${number.toFixed(2)}`;
   };
 
+  const calculateFinalBalance = (budget) => {
+    if (!budget) return 0;
+
+    const totalUtilityBills = (budget.utilityBills || []).reduce(
+      (total, bill) => total + Number(bill.price || 0),
+      0,
+    );
+
+    const totalSubscriptions = (budget.recurringBills || []).reduce(
+      (total, bill) => total + Number(bill.price || 0),
+      0,
+    );
+
+    const totalAdditionalBills = (budget.additionalBills || []).reduce(
+      (total, bill) => total + Number(bill.price || 0),
+      0,
+    );
+
+    const totalExpenses = totalUtilityBills + totalSubscriptions;
+
+    const salaryBalance = Number(budget.salary || 0) - totalExpenses;
+
+    const finalBalance = salaryBalance - totalAdditionalBills;
+
+    return finalBalance;
+  };
+
+  const activeBudget = budgets.find((budget) => {
+    if (!budget.startDate || !budget.endDate) return false;
+
+    const startDate = new Date(`${budget.startDate.slice(0, 10)}T00:00:00`);
+    const endDate = new Date(`${budget.endDate.slice(0, 10)}T23:59:59`);
+
+    return today >= startDate && today <= endDate;
+  });
+
+  const headerBalance = calculateFinalBalance(activeBudget);
+
   const renderBudgetCard = (budget, index) => {
     const totalUtilityBills = budget.utilityBills.reduce(
       (total, bill) => total + Number(bill.price || 0),
@@ -488,7 +526,7 @@ function App() {
 
     const totalExpenses = totalUtilityBills + totalSubscriptions;
     const salaryBalance = Number(budget.salary || 0) - totalExpenses;
-    const finalBalance = salaryBalance - totalAdditionalBills;
+    const finalBalance = calculateFinalBalance(budget);
     const paidUtilityTotal = budget.utilityBills.reduce(
       (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
       0,
@@ -538,6 +576,10 @@ function App() {
       paidUtilityTotal -
       paidRecurringTotal -
       paidAdditionalTotal;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
     return (
       <>
         <MainCards
@@ -645,7 +687,7 @@ function App() {
   return (
     <div className="page">
       <div className="page__content">
-        <Header />
+        <Header formatMoney={formatMoney} finalBalance={headerBalance} />
 
         <Navbar />
 
