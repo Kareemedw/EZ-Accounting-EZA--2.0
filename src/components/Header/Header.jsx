@@ -11,7 +11,7 @@ function Header({ finalBalance, formatMoney }) {
         <div className="header__information">
           <h3 className="header__username">Kareem Edwards</h3>
           <label className="card__label">
-            <p className="card__label-title">Balance left from salary</p>
+            <p className="card__label-title">Current Balance</p>
             <input
               type="text"
               className="card__input-header"
