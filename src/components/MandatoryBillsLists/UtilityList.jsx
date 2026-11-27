@@ -134,7 +134,9 @@ function UtilityList({
 
                     <input
                       type="text"
-                      className="card__input  specail__spent-input"
+                      className={`card__input specail__spent-input ${
+                        bill.paid ? "special__spent-input_paid" : ""
+                      }`}
                       placeholder={
                         isGrocery
                           ? "Grocery spent"

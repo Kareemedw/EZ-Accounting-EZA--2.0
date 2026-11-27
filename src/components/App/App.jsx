@@ -508,21 +508,42 @@ function App() {
     // Salary balance after all planned expenses
     const finalBalance = salaryBalance - totalAdditionalBills;
 
+    // Determine which amount to deduct when checked
+    const getPaidExpenseAmount = (expense) => {
+      if (!expense.paid) return 0;
+
+      const expenseName = expense.name?.trim().toLowerCase();
+
+      switch (expenseName) {
+        case "grocery":
+          return totalGrocerySpent;
+
+        case "train pass":
+          return totalTrainPassSpent;
+
+        case "car payment":
+          return totalCarPaymentSpent;
+
+        default:
+          return Number(expense.price || 0);
+      }
+    };
+
     // Paid utility bills
     const paidUtilityTotal = utilityBills.reduce(
-      (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
+      (total, bill) => total + getPaidExpenseAmount(bill),
       0,
     );
 
     // Paid subscriptions
     const paidRecurringTotal = recurringBills.reduce(
-      (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
+      (total, bill) => total + getPaidExpenseAmount(bill),
       0,
     );
 
     // Paid additional expenses
     const paidAdditionalTotal = additionalBills.reduce(
-      (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
+      (total, bill) => total + getPaidExpenseAmount(bill),
       0,
     );
 
@@ -533,11 +554,23 @@ function App() {
     // Actual balance after paid expenses
     const currentBalanceAfterPaid = currentBalance - totalPaidExpenses;
 
-    return currentBalanceAfterPaid;
+    return {
+      totalUtilityBills,
+      totalSubscriptions,
+      totalAdditionalBills,
+      totalGrocerySpent,
+      totalTrainPassSpent,
+      totalCarPaymentSpent,
+      totalExpenses,
+      salaryBalance,
+      finalBalance,
+      paidUtilityTotal,
+      paidRecurringTotal,
+      paidAdditionalTotal,
+      totalPaidExpenses,
+      currentBalanceAfterPaid,
+    };
   };
-
-  // const today = new Date();
-  // today.setHours(0, 0, 0, 0);
 
   const activeBudget = budgets.find((budget) => {
     if (!budget?.startDate || !budget?.endDate) {
@@ -551,7 +584,8 @@ function App() {
     return today >= startDate && today <= endDate;
   });
 
-  const headerBalance = calculateBudgetTotals(activeBudget);
+  const headerBalance =
+    calculateBudgetTotals(activeBudget).currentBalanceAfterPaid;
 
   const renderBudgetCard = (budget, index) => {
     const totalUtilityBills = budget.utilityBills.reduce(
@@ -587,15 +621,29 @@ function App() {
     const totalExpenses = totalUtilityBills + totalSubscriptions;
     const salaryBalance = Number(budget.salary || 0) - totalExpenses;
     const finalBalance = salaryBalance - totalAdditionalBills;
-    const paidUtilityTotal = budget.utilityBills.reduce(
-      (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
-      0,
-    );
+    const paidUtilityTotal = budget.utilityBills.reduce((total, bill) => {
+      if (!bill.paid) return total;
 
-    const paidRecurringTotal = budget.recurringBills.reduce(
-      (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),
-      0,
-    );
+      const isCarPayment = bill.name?.trim().toLowerCase() === "car payment";
+
+      const amount = isCarPayment
+        ? totalCarPaymentSpent
+        : Number(bill.price || 0);
+
+      return total + amount;
+    }, 0);
+
+    const paidRecurringTotal = budget.recurringBills.reduce((total, bill) => {
+      if (!bill.paid) return total;
+
+      const isCarPayment = bill.name?.trim().toLowerCase() === "car payment";
+
+      const amount = isCarPayment
+        ? totalCarPaymentSpent
+        : Number(bill.price || 0);
+
+      return total + amount;
+    }, 0);
 
     const paidAdditionalTotal = budget.additionalBills.reduce(
       (total, bill) => total + (bill.paid ? Number(bill.price || 0) : 0),

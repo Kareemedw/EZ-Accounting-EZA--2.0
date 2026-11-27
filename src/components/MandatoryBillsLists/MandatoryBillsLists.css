@@ -93,6 +93,12 @@
   border: 2px solid blue;
 }
 
+.special__spent-input_paid {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #2e7d32;
+}
+
 @media screen and (max-width: 1225px) {
   .utility__list,
   .recurring__list {

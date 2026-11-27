@@ -115,7 +115,9 @@ function SubscriptionList({
 
                     <input
                       type="text"
-                      className="card__input  specail__spent-input"
+                      className={`card__input specail__spent-input ${
+                        recurring.paid ? "special__spent-input_paid" : ""
+                      }`}
                       placeholder={isCarPayment ? "Car Payment" : "Budget"}
                       value={formatMoney(spentValue)}
                       readOnly
